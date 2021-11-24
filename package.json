@@ -1,0 +1,20 @@
+{
+	"name": "onlooker",
+	"version": "1.0.0",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"client": "cd client && npm start",
+		"server": "cd server && nodemon src/server.js",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"installClient": "cd client && npm install",
+		"installServer": "cd server && npm install",
+		"postInstall": "npm run installClient && npm run installServer"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {},
+	"devDependencies": {
+		"concurrently": "^6.4.0",
+		"nodemon": "^2.0.15"
+	}
+}
