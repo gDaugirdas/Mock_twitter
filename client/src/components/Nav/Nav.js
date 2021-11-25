@@ -5,7 +5,6 @@ import { AuthContext } from '../../contexts/AuthContext';
 
 const Nav = ({ pages, isOpen, setIsOpen }) => {
 	const authContext = useContext(AuthContext);
-
 	return (
 		<S.SNav isOpen={isOpen}>
 			{pages?.map((page) => (
@@ -14,7 +13,8 @@ const Nav = ({ pages, isOpen, setIsOpen }) => {
 					to={page.href}
 					onClick={() => {
 						setIsOpen(false);
-						page.title = 'Logout' && authContext.setToken();
+						page.title === 'Logout' && authContext.setToken();
+						localStorage.removeItem('token');
 					}}
 				>
 					{page.title}

@@ -34,7 +34,6 @@ const Header = () => {
 	];
 
 	const [isOpen, setIsOpen] = useState(false);
-
 	return (
 		<S.SHeader>
 			<S.SHeaderContainer>
