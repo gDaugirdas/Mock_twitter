@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { media } from '../../styles';
 
 export const SNav = styled.nav`
-	width: 40%;
+	width: 18rem;
 	background: ${(props) => props.theme.colors.secondary};
 	height: 100%;
 	top: 0;
-	right: -40%;
+	right: -18rem;
 	position: fixed;
 	z-index: 9;
 	text-align: center;

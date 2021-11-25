@@ -11,11 +11,9 @@ const postRegister = async (req, res) => {
   try {
     userInput = await userRegisterSchema.validateAsync(userInput);
   } catch (err) {
-    return res
-      .status(400)
-      .send({
-        err: err.details[0]?.message || 'Unkown error, please contact support',
-      });
+    return res.status(400).send({
+      err: err.details[0]?.message || 'Unkown error, please contact support',
+    });
   }
 
   const encryptedPassword = await bcrypt.hash(userInput.password, 10);
@@ -52,11 +50,9 @@ const postLogin = async (req, res) => {
   try {
     userInput = await userLoginSchema.validateAsync(userInput);
   } catch (err) {
-    return res
-      .status(400)
-      .send({
-        err: err.details[0]?.message || 'Unkown error, please contact support',
-      });
+    return res.status(400).send({
+      err: err.details[0]?.message || 'Unkown error, please contact support',
+    });
   }
 
   const query = `SELECT * FROM bf_users WHERE email = ${mysql.escape(
@@ -68,11 +64,9 @@ const postLogin = async (req, res) => {
     const [data] = await con.execute(query);
 
     if (data.length === 0) {
-      return res
-        .status(400)
-        .send({
-          err: 'No user found with this email, please try again or create a new account',
-        });
+      return res.status(400).send({
+        err: 'No user found with this email, please try again or create a new account',
+      });
     }
 
     const isAuthed = bcrypt.compareSync(userInput.password, data[0].password);
@@ -84,11 +78,9 @@ const postLogin = async (req, res) => {
         first_name: data[0].first_name,
         last_name: data[0].last_name,
         created_at: data[0].created_at,
+        profile_picture: data[0].profile_picture,
       },
       jwtSecret,
-      {
-        expiresIn: '24h',
-      },
     );
 
     return isAuthed

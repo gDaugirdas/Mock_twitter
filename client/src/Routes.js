@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import AuthProvider from './contexts/AuthContext';
+import { AuthProvider, UserProvider } from './contexts/';
 import { GlobalStyles, theme } from './styles';
 import { Header, PrivateRoute, Loader } from './components';
 
@@ -16,35 +16,45 @@ const PageRouter = () => {
 		<ThemeProvider theme={theme}>
 			<GlobalStyles />
 			<AuthProvider>
-				<Router>
-					<Header />
-					<Suspense fallback={<Loader />}>
-						<Routes>
-							<Route
-								exact
-								path='/'
-								element={
-									<PrivateRoute>
-										<LazyHome />
-									</PrivateRoute>
-								}
-							/>
-							<Route
-								exact
-								path='/add'
-								element={
-									<PrivateRoute>
-										<LazyAdd />
-									</PrivateRoute>
-								}
-							/>
-							<Route exact path='/login' element={<LazyLogin />} />
-							<Route exact path='/signup' element={<LazySignup />} />
-							<Route exact path='/profile' element={<LazyProfile />} />
-							<Route path='*' element={<LazyHome />} />
-						</Routes>
-					</Suspense>
-				</Router>
+				<UserProvider>
+					<Router>
+						<Header />
+						<Suspense fallback={<Loader />}>
+							<Routes>
+								<Route
+									exact
+									path='/'
+									element={
+										<PrivateRoute>
+											<LazyHome />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									exact
+									path='/add'
+									element={
+										<PrivateRoute>
+											<LazyAdd />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									exact
+									path='/profile'
+									element={
+										<PrivateRoute>
+											<LazyProfile />
+										</PrivateRoute>
+									}
+								/>
+								<Route exact path='/login' element={<LazyLogin />} />
+								<Route exact path='/signup' element={<LazySignup />} />
+								<Route path='*' element={<LazyHome />} />
+							</Routes>
+						</Suspense>
+					</Router>
+				</UserProvider>
 			</AuthProvider>
 		</ThemeProvider>
 	);

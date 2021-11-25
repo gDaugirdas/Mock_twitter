@@ -37,7 +37,7 @@ const Header = () => {
 	return (
 		<S.SHeader>
 			<S.SHeaderContainer>
-				<Logo logoUrl={LogoImage} logoText='Bookface' />
+				<Logo logoUrl={LogoImage} logoText='itter' />
 				<Hamburger isOpen={isOpen} setIsOpen={setIsOpen} />
 				<Nav pages={authContext.token ? userPages : noUserPages} isOpen={isOpen} setIsOpen={setIsOpen} />
 			</S.SHeaderContainer>

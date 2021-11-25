@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const SLogoLink = styled(Link)`
 	display: flex;
-	align-items: center;
+	align-items: flex-end;
 	color: ${(props) => props.theme.colors.font};
 `;
 
@@ -12,7 +12,7 @@ export const SLogo = styled.img`
 `;
 
 export const SLogoText = styled.span`
-	font-size: 1.8rem;
+	font-size: 2.6rem;
 	font-weight: bold;
-	margin-left: 0.5rem;
+	margin-left: 0.25rem;
 `;

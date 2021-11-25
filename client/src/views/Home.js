@@ -40,9 +40,10 @@ const Home = () => {
 		<Main>
 			<Section>
 				<Container>
-					{notification && status && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
+					{/* {notification && status && <Notification notificationText={notification} status={status} />}
+					{loading && <Loader />} */}
 					{/* {skills && <CardList skills={skills} />} */}
+					Hello Home
 				</Container>
 			</Section>
 		</Main>
