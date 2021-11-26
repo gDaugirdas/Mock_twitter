@@ -1,9 +1,8 @@
 const mysql = require('mysql2/promise');
-const Joi = require('joi');
 
 const { dbConfig } = require('../../config');
 
-const { tweetSchema } = require('../../schemas');
+const { tweetPostSchema, tweetUpdateSchema } = require('../../schemas');
 
 const getTweets = async (req, res) => {
   try {
@@ -18,17 +17,43 @@ const getTweets = async (req, res) => {
     const [data] = await con.execute(query);
     await con.end();
 
-    return res.send(data);
+    return data.length === 0
+      ? res.status(404).send({ err: 'Tweets not found' })
+      : res.send(data);
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
 };
 
-const postNewTweet = async (req, res) => {
-  let userInput = req.body;
-  console.log(userInput);
+const getTweet = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    userInput = await tweetSchema.validateAsync(userInput);
+    const query = `
+    SELECT bf_users.first_name, bf_users.profile_picture, bf_users.created_at, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.likes, bf_tweets.id, bf_tweets.user_id
+    FROM bf_users
+    LEFT JOIN bf_tweets
+    ON bf_users.id = bf_tweets.user_id
+    WHERE bf_tweets.id = ${mysql.escape(id)}
+    `;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.length === 0
+      ? res.status(404).send({ err: 'Tweet not found' })
+      : res.send(data);
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
+const postTweet = async (req, res) => {
+  let userInput = req.body;
+
+  try {
+    userInput = await tweetPostSchema.validateAsync(userInput);
   } catch (err) {
     return res.status(400).send({
       err: err.details[0]?.message || 'Unkown error, please contact support',
@@ -45,45 +70,100 @@ const postNewTweet = async (req, res) => {
     const [data] = await con.execute(query);
     await con.end();
 
-    return res.send(data);
+    return data.affectedRows === 0
+      ? res.status(404).send({ err: 'Tweet post was unsuccessful' })
+      : res.send(data);
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
 };
 
-// const postNewBillToGroup = async (req, res) => {
-//   const newBillSchema = Joi.object({
-//     group_id: Joi.number().required(),
-//     amount: Joi.number().required(),
-//     description: Joi.string().min(1).max(500).required(),
-//   });
+const updateTweet = async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
 
-//   let userInput = req.body;
+  let userInput = req.body;
 
-//   try {
-//     userInput = await newBillSchema.validateAsync(userInput);
-//   } catch (err) {
-//     return res
-//       .status(400)
-//       .send({ err: 'Incorrect parameters, please try again' });
-//   }
+  try {
+    const query = `SELECT user_id FROM bf_tweets WHERE id = ${mysql.escape(
+      id,
+    )}`;
 
-//   try {
-//     const query = `INSERT INTO sb_bills (group_id, amount, description) VALUES (${mysql.escape(
-//       userInput.group_id,
-//     )}, ${mysql.escape(userInput.amount)}, ${mysql.escape(
-//       userInput.description,
-//     )})`;
-//     const con = await mysql.createConnection(dbConfig);
-//     const [data] = await con.execute(query);
-//     await con.end();
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
 
-//     return data.affectedRows > 0
-//       ? res.send({ msg: 'Bill added successfully' })
-//       : res.status(400).send({ err: "Bill wasn't added, please try again" });
-//   } catch (err) {
-//     return res.status(500).send({ err: 'Server error' });
-//   }
-// };
+    if (data[0].user_id !== user.id) {
+      return res.status(401).send({
+        err: 'You are not authorized to edit this tweet',
+      });
+    }
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
 
-module.exports = { getTweets, postNewTweet };
+  try {
+    userInput = await tweetUpdateSchema.validateAsync(userInput);
+  } catch (err) {
+    return res.status(400).send({
+      err: err.details[0]?.message || 'Unkown error, please contact support',
+    });
+  }
+
+  try {
+    const query = `UPDATE bf_tweets SET tweet_text = ${mysql.escape(
+      userInput.tweet_text,
+    )}, tweet_attachment = ${mysql.escape(
+      userInput.tweet_attachment,
+    )} WHERE id = ${mysql.escape(id)}`;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.affectedRows === 0
+      ? res.status(404).send({ err: 'Tweet update was unsuccessful' })
+      : res.send(data);
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
+const deleteTweet = async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+
+  try {
+    const query = `SELECT user_id FROM bf_tweets WHERE id = ${mysql.escape(
+      id,
+    )}`;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    if (data[0].user_id !== user.id) {
+      return res
+        .status(403)
+        .send({ err: 'You are not authorized to delete this tweet' });
+    }
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+
+  try {
+    const query = `DELETE FROM bf_tweets WHERE id = ${mysql.escape(id)}`;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.affectedRows === 0
+      ? res.status(404).send({ err: 'Tweet deletion was unsuccessful' })
+      : res.send({ msg: 'Tweet deleted' });
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
+module.exports = { getTweets, getTweet, postTweet, updateTweet, deleteTweet };

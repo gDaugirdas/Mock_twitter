@@ -1,9 +1,18 @@
 const { postLogin, postRegister } = require('./auth');
-const { getTweets, postNewTweet } = require('./tweets');
+const {
+  getTweets,
+  getTweet,
+  postTweet,
+  updateTweet,
+  deleteTweet,
+} = require('./tweets');
 
 module.exports = {
   postLogin,
   postRegister,
   getTweets,
-  postNewTweet,
+  getTweet,
+  postTweet,
+  updateTweet,
+  deleteTweet,
 };

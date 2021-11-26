@@ -1,8 +1,9 @@
 const { userRegisterSchema, userLoginSchema } = require('./auth');
-const { tweetSchema } = require('./tweet');
+const { tweetPostSchema, tweetUpdateSchema } = require('./tweet');
 
 module.exports = {
   userRegisterSchema,
   userLoginSchema,
-  tweetSchema,
+  tweetPostSchema,
+  tweetUpdateSchema,
 };

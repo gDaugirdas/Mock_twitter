@@ -2,14 +2,24 @@ const express = require('express');
 
 const router = express.Router();
 
-// const { isLoggedIn } = require('../../middleware/isLoggedIn');
+const { isLoggedIn } = require('../../middleware/isLoggedIn');
 
-const { getTweets, postNewTweet } = require('../../controllers/v1');
+const {
+  getTweets,
+  getTweet,
+  postTweet,
+  updateTweet,
+  deleteTweet,
+} = require('../../controllers/v1');
 
-const {} = require('../../schemas');
+router.get('/', isLoggedIn, getTweets);
 
-router.get('/', getTweets);
+router.get('/:id', isLoggedIn, getTweet);
 
-router.post('/', postNewTweet);
+router.post('/', isLoggedIn, postTweet);
+
+router.put('/:id', isLoggedIn, updateTweet);
+
+router.delete('/:id', isLoggedIn, deleteTweet);
 
 module.exports = router;

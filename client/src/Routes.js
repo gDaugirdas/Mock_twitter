@@ -10,6 +10,7 @@ const LazyLogin = lazy(() => import('./views/Login.js'));
 const LazySignup = lazy(() => import('./views/Signup.js'));
 const LazyAdd = lazy(() => import('./views/Add'));
 const LazyProfile = lazy(() => import('./views/Profile'));
+const LazyTweet = lazy(() => import('./views/Tweet'));
 
 const PageRouter = () => {
 	return (
@@ -45,6 +46,15 @@ const PageRouter = () => {
 									element={
 										<PrivateRoute>
 											<LazyProfile />
+										</PrivateRoute>
+									}
+								/>
+								<Route
+									exact
+									path='/tweet/:id'
+									element={
+										<PrivateRoute>
+											<LazyTweet />
 										</PrivateRoute>
 									}
 								/>
