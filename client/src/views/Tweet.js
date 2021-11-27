@@ -51,7 +51,7 @@ const Tweet = () => {
 								<p>Posted by: {tweet.first_name}</p>
 								<p>Text: {tweet.tweet_text}</p>
 								{tweet.attachment && <p>{tweet.attachment}</p>}
-								<p>Likes: {tweet.likes}</p>
+								<p>Likes: {tweet.liked}</p>
 								<p>Posted at: {tweet.created_at}</p>
 								<hr />
 							</div>

@@ -7,15 +7,24 @@ const { tweetPostSchema, tweetUpdateSchema } = require('../../schemas');
 const getTweets = async (req, res) => {
   try {
     const query = `
-    SELECT bf_users.first_name, bf_users.profile_picture, bf_users.created_at, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.likes, bf_tweets.id, bf_tweets.user_id
-    FROM bf_users
-    LEFT JOIN bf_tweets
-    ON bf_users.id = bf_tweets.user_id
+    SELECT bf_users.first_name, bf_users.profile_picture, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.id, bf_tweets.user_id, SUM(bf_likes.liked) AS likes
+    FROM bf_tweets
+    LEFT JOIN bf_users
+    ON bf_tweets.user_id = bf_users.id
+    LEFT JOIN bf_likes
+    ON bf_tweets.id = bf_likes.tweet_id
+    GROUP BY bf_tweets.id
+    ORDER BY bf_tweets.created_at DESC
     `;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
     await con.end();
+
+    data &&
+      data.forEach((tweet) => {
+        tweet.likes = Number(tweet.likes);
+      });
 
     return data.length === 0
       ? res.status(404).send({ err: 'Tweets not found' })

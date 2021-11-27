@@ -51,7 +51,7 @@ const PageRouter = () => {
 								/>
 								<Route
 									exact
-									path='/tweet/:id'
+									path='/tweets/:id'
 									element={
 										<PrivateRoute>
 											<LazyTweet />

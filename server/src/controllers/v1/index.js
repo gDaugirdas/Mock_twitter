@@ -7,6 +7,8 @@ const {
   deleteTweet,
 } = require('./tweets');
 
+const { like } = require('./like');
+
 module.exports = {
   postLogin,
   postRegister,
@@ -15,4 +17,5 @@ module.exports = {
   postTweet,
   updateTweet,
   deleteTweet,
+  like,
 };
