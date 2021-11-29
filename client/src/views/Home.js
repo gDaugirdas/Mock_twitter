@@ -65,10 +65,10 @@ const Home = () => {
 
 	return (
 		<Main>
+			{notification && status && <Notification notificationText={notification} status={status} />}
+			{loading && <Loader />}
 			<Section>
 				<Container>
-					{notification && status && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
 					{tweets &&
 						tweets.map((tweet) => (
 							<div key={tweet.id}>

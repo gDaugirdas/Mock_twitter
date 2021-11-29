@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const SNotification = styled.div`
 	background-color: ${(props) => (props.status < 400 ? props.theme.colors.success : props.theme.colors.error)};
-	margin: 0 auto;
+	margin: 1rem auto;
 	max-width: 32rem;
 	display: flex;
 	align-items: center;

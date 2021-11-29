@@ -3,9 +3,13 @@ import * as S from './Header.styles';
 import { Logo, Hamburger, Nav } from '../';
 import { AuthContext } from '../../contexts/AuthContext';
 import LogoImage from '../../static/images/logo.png';
+import { UserContext } from '../../contexts/UserContext';
 
 const Header = () => {
 	const authContext = useContext(AuthContext);
+	const userContext = useContext(UserContext);
+
+	const user = userContext.user;
 
 	const noUserPages = [
 		{
@@ -25,7 +29,7 @@ const Header = () => {
 		},
 		{
 			title: 'Profile',
-			href: '/profile',
+			href: `/user/${user && user.id}`,
 		},
 		{
 			title: 'Logout',

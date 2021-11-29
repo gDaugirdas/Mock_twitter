@@ -13,3 +13,7 @@ export { default as Loader } from './Loader/Loader';
 export { default as Suggestion } from './Suggestion/Suggestion';
 export { default as CardList } from './CardList/CardList';
 export { default as PrivateRoute } from './PrivateRoute/PrivateRoute';
+export { default as UserImage } from './UserImage/UserImage';
+export { default as UserMain } from './UserMain/UserMain';
+export { default as Dropzone } from './Dropzone/Dropzone';
+export { default as ImageGallery } from './ImageGallery/ImageGallery';

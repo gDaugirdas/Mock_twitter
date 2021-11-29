@@ -60,10 +60,10 @@ const Add = () => {
 
 	return (
 		<Main>
+			{notification && <Notification notificationText={notification} status={status} />}
+			{loading && <Loader />}
 			<Section>
 				<Container>
-					{notification && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
 					<Form handleSubmit={handleSubmit} heading='Add new skill'>
 						<FormGroupInput
 							labelText='Title'

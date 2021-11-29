@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import * as S from './Container.styles';
 
 const Container = ({ children }) => {
-	return <S.SContainer>{children || 'No container children provided'}</S.SContainer>;
+	return <S.SContainer>{children}</S.SContainer>;
 };
 
 Container.propTypes = {
-	children: PropTypes.node.isRequired,
+	children: PropTypes.node,
 };
 
 Container.defaultProps = {

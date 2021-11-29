@@ -1,11 +1,11 @@
 const auth = require('./auth');
 const tweets = require('./tweets');
-const profile = require('./profile');
+const user = require('./user');
 const like = require('./like');
 
 module.exports = {
   auth,
   tweets,
-  profile,
+  user,
   like,
 };

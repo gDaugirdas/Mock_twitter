@@ -11,10 +11,13 @@ const getTweets = async (req, res) => {
     FROM bf_tweets
     LEFT JOIN bf_users
     ON bf_tweets.user_id = bf_users.id
+    LEFT JOIN bf_comments
+    ON bf_tweets.id = bf_comments.tweet_id
     LEFT JOIN bf_likes
     ON bf_tweets.id = bf_likes.tweet_id
     GROUP BY bf_tweets.id
     ORDER BY bf_tweets.created_at DESC
+    LIMIT 20
     `;
 
     const con = await mysql.createConnection(dbConfig);

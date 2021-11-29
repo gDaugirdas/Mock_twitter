@@ -58,10 +58,10 @@ const Signup = () => {
 
 	return (
 		<Main>
+			{notification && <Notification notificationText={notification} status={status} />}
+			{loading && <Loader />}
 			<Section>
 				<Container>
-					{notification && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
 					<Form handleSubmit={handleSubmit} heading='Sign up'>
 						<FormGroupInput
 							labelText='First Name'

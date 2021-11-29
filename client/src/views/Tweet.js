@@ -41,10 +41,10 @@ const Tweet = () => {
 
 	return (
 		<Main>
+			{notification && status && <Notification notificationText={notification} status={status} />}
+			{loading && <Loader />}
 			<Section>
 				<Container>
-					{notification && status && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
 					{tweet &&
 						tweet.map((tweet) => (
 							<div key={tweet.id}>

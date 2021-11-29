@@ -63,16 +63,12 @@ const Login = () => {
 			});
 	};
 
-	const responseGoogle = (response) => {
-		console.log(response);
-	};
-
 	return (
 		<Main>
+			{notification && <Notification notificationText={notification} status={status} />}
+			{loading && <Loader />}
 			<Section>
 				<Container>
-					{notification && <Notification notificationText={notification} status={status} />}
-					{loading && <Loader />}
 					<Form handleSubmit={handleSubmit} heading='Login'>
 						<FormGroupInput
 							labelText='Email'

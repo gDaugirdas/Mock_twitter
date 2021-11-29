@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
-import { AuthProvider, UserProvider } from './contexts/';
+import { AuthProvider, UserProvider } from './contexts';
 import { GlobalStyles, theme } from './styles';
 import { Header, PrivateRoute, Loader } from './components';
 
@@ -24,7 +24,7 @@ const PageRouter = () => {
 							<Routes>
 								<Route
 									exact
-									path='/'
+									path='/home'
 									element={
 										<PrivateRoute>
 											<LazyHome />
@@ -42,7 +42,7 @@ const PageRouter = () => {
 								/>
 								<Route
 									exact
-									path='/profile'
+									path='/user/:id'
 									element={
 										<PrivateRoute>
 											<LazyProfile />
@@ -60,7 +60,7 @@ const PageRouter = () => {
 								/>
 								<Route exact path='/login' element={<LazyLogin />} />
 								<Route exact path='/signup' element={<LazySignup />} />
-								<Route path='*' element={<LazyHome />} />
+								<Route path='*' element={<Navigate replace to='/home' />}></Route>
 							</Routes>
 						</Suspense>
 					</Router>

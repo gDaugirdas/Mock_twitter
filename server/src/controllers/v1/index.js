@@ -9,6 +9,12 @@ const {
 
 const { like } = require('./like');
 
+const {
+  getUser,
+  postProfilePicture,
+  postProfileGalleryPicture,
+} = require('./user');
+
 module.exports = {
   postLogin,
   postRegister,
@@ -18,4 +24,7 @@ module.exports = {
   updateTweet,
   deleteTweet,
   like,
+  getUser,
+  postProfilePicture,
+  postProfileGalleryPicture,
 };
