@@ -4,8 +4,8 @@ const router = express.Router();
 
 const { isLoggedIn } = require('../../middleware/isLoggedIn');
 
-const { like } = require('../../controllers/v1');
+const { postTweetLike } = require('../../controllers/v1');
 
-router.post('/:id', isLoggedIn, like);
+router.post('/:id', isLoggedIn, postTweetLike);
 
 module.exports = router;

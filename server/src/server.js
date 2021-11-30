@@ -8,12 +8,21 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const { auth, like, tweets, user } = require('./routes/v1');
+const {
+  auth,
+  tweets,
+  tweetsCount,
+  tweetsLike,
+  user,
+  userPictures,
+} = require('./routes/v1');
 
 app.use('/v1/api/auth', auth);
 app.use('/v1/api/tweets', tweets);
-app.use('/v1/api/tweets/like', like);
+app.use('/v1/api/tweets/count', tweetsCount);
+app.use('/v1/api/tweets/like', tweetsLike);
 app.use('/v1/api/user', user);
+app.use('/v1/api/user/pictures', userPictures);
 
 app.get('/', (req, res) => res.send({ msg: 'Version 1.0.0' }));
 

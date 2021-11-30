@@ -1,10 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
 
 const { isLoggedIn } = require('../../middleware/isLoggedIn');
 
-const { getUser } = require('../../controllers/v1');
+const { getTweetsCount } = require('../../controllers/v1');
 
-router.get('/:id', isLoggedIn, getUser);
+router.get('/', isLoggedIn, getTweetsCount);
 
 module.exports = router;

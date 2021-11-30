@@ -2,7 +2,7 @@ const mysql = require('mysql2/promise');
 
 const { dbConfig } = require('../../config');
 
-const like = async (req, res) => {
+const postTweetLike = async (req, res) => {
   const user = req.user;
   const { id } = req.params;
 
@@ -56,4 +56,4 @@ const like = async (req, res) => {
   }
 };
 
-module.exports = { like };
+module.exports = { postTweetLike };

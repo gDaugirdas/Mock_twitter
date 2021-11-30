@@ -10,14 +10,11 @@ const {
   postTweet,
   updateTweet,
   deleteTweet,
-  getTweetCount,
 } = require('../../controllers/v1');
 
 router.get('/:page', isLoggedIn, getTweets);
 
 router.get('/:id', isLoggedIn, getTweet);
-
-router.get('/count/tweets', isLoggedIn, getTweetCount);
 
 router.post('/', isLoggedIn, postTweet);
 
