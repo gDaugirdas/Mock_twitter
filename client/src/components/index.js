@@ -17,3 +17,4 @@ export { default as UserImage } from './UserImage/UserImage';
 export { default as UserMain } from './UserMain/UserMain';
 export { default as Dropzone } from './Dropzone/Dropzone';
 export { default as ImageGallery } from './ImageGallery/ImageGallery';
+export { default as PaginatedItems } from './PaginatedItems/PaginatedItems';

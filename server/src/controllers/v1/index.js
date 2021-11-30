@@ -2,6 +2,7 @@ const { postLogin, postRegister } = require('./auth');
 const {
   getTweets,
   getTweet,
+  getTweetCount,
   postTweet,
   updateTweet,
   deleteTweet,
@@ -13,6 +14,7 @@ const {
   getUser,
   postProfilePicture,
   postProfileGalleryPicture,
+  deleteProfileGalleryPicture,
 } = require('./user');
 
 module.exports = {
@@ -20,6 +22,7 @@ module.exports = {
   postRegister,
   getTweets,
   getTweet,
+  getTweetCount,
   postTweet,
   updateTweet,
   deleteTweet,
@@ -27,4 +30,5 @@ module.exports = {
   getUser,
   postProfilePicture,
   postProfileGalleryPicture,
+  deleteProfileGalleryPicture,
 };

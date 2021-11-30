@@ -8,8 +8,6 @@ const PrivateRoute = ({ children }) => {
 
 	if (localStorage.getItem('token')) {
 		authContext.token = localStorage.getItem('token');
-	} else {
-		localStorage.setItem('token', authContext.token);
 	}
 
 	return authContext.token ? children : <Navigate replace to='/login' />;

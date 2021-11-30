@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { Main, Section, Loader, Notification, UserMain, ImageGallery } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
-import { UserContext } from '../contexts/UserContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 
 const Profile = () => {
 	const [notification, setNotification] = useState();
@@ -13,13 +13,14 @@ const Profile = () => {
 	const [userImages, setUserImages] = useState();
 
 	const authContext = useContext(AuthContext);
-	const userContext = useContext(UserContext);
 
 	const { id } = useParams();
 
-	const isCurrentUser = Number(id) === userContext.user.id;
+	const currentUser = authContext.token ? jwt_decode(authContext.token).id : null;
 
-	const onDrop = useCallback(
+	const isCurrentUser = Number(id) === currentUser;
+
+	const onProfileDrop = useCallback(
 		(acceptedFiles) => {
 			const formData = new FormData();
 			formData.append('file', acceptedFiles[0]);
@@ -49,6 +50,62 @@ const Profile = () => {
 		},
 		[authContext.token, user]
 	);
+
+	const onGalleryDrop = useCallback(
+		(acceptedFiles) => {
+			const formData = new FormData();
+			formData.append('file', acceptedFiles[0]);
+			setLoading(true);
+			axios
+				.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/profileGalleryPicture', formData, {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: 'Bearer ' + authContext.token,
+					},
+				})
+				.then((res) => {
+					if (res.status === 200) {
+						setUserImages([...userImages, { image_url: res.data.imageUrl, id: res.data.id }]);
+						setNotification(res.data.msg);
+						setStatus(res.status);
+					}
+				})
+				.catch((err) => {
+					setNotification(err.response.data.err);
+					setStatus(err.response.status);
+					return;
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		},
+		[authContext.token, userImages]
+	);
+
+	const handleDelete = (id) => {
+		setLoading(true);
+		axios
+			.delete(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/profileGalleryPicture/' + id, {
+				headers: {
+					Authorization: 'Bearer ' + authContext.token,
+				},
+			})
+			.then((res) => {
+				if (res.status === 200) {
+					setUserImages(userImages.filter((image) => image.id !== id));
+					setNotification(res.data.msg);
+					setStatus(res.status);
+				}
+			})
+			.catch((err) => {
+				setNotification(err.response.data.err);
+				setStatus(err.response.status);
+				return;
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	};
 
 	useEffect(() => {
 		axios
@@ -85,10 +142,15 @@ const Profile = () => {
 			{!loading && (
 				<>
 					<Section>
-						<UserMain user={user} onDrop={onDrop} isCurrentUser={isCurrentUser} />
+						<UserMain user={user} onDrop={onProfileDrop} isCurrentUser={isCurrentUser} />
 					</Section>
 					<Section>
-						<ImageGallery images={userImages} isCurrentUser={isCurrentUser} onDrop={onDrop} />
+						<ImageGallery
+							images={userImages}
+							isCurrentUser={isCurrentUser}
+							onDrop={onGalleryDrop}
+							handleDelete={handleDelete}
+						/>
 					</Section>
 				</>
 			)}

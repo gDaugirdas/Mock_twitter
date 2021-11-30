@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { media } from '../../styles';
 
 export const SDropzone = styled.div`
 	margin: 1rem auto;
@@ -7,10 +6,8 @@ export const SDropzone = styled.div`
 	border: 0.2rem solid red;
 	cursor: pointer;
 	text-align: center;
-	${media.sm_up`
-        margin: 0;
-    `}
-	border: 0.2rem dashed ${(props) => (props.isDragActive ? props.theme.colors.accent : props.theme.colors.secondary)};
+	border-radius: 0.2rem;
+	border: 0.2rem solid ${(props) => (props.isDragActive ? props.theme.colors.accent : props.theme.colors.secondary)};
 `;
 
 export const SParagraph = styled.p`

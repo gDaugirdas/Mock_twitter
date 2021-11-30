@@ -1,15 +1,24 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import * as S from './Header.styles';
 import { Logo, Hamburger, Nav } from '../';
 import { AuthContext } from '../../contexts/AuthContext';
 import LogoImage from '../../static/images/logo.png';
-import { UserContext } from '../../contexts/UserContext';
+import jwt_decode from 'jwt-decode';
 
 const Header = () => {
 	const authContext = useContext(AuthContext);
-	const userContext = useContext(UserContext);
 
-	const user = userContext.user;
+	const [user, setUser] = useState();
+
+	useEffect(() => {
+		if (authContext.token) {
+			setUser(jwt_decode(authContext.token));
+		}
+	}, [authContext.token]);
+
+	console.log(localStorage.getItem('token'));
+
+	const [isOpen, setIsOpen] = useState(false);
 
 	const noUserPages = [
 		{
@@ -37,7 +46,6 @@ const Header = () => {
 		},
 	];
 
-	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<S.SHeader>
 			<S.SHeaderContainer>

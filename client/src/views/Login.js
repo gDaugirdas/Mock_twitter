@@ -41,6 +41,7 @@ const Login = () => {
 			.then((res) => {
 				if (res.status === 200) {
 					authContext.setToken(res.data.token);
+					localStorage.setItem('token', res.data.token);
 					setNotification(res.data.msg);
 					setStatus(res.status);
 					return navigate('/');

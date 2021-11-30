@@ -46,28 +46,6 @@ const tweetPostSchema = Joi.object().keys({
       });
       return errors;
     }),
-  user_id: Joi.number()
-    .integer()
-    .min(1)
-    .required()
-    .error((errors) => {
-      errors.forEach((err) => {
-        switch (err.code) {
-          case 'any.required':
-            err.message = 'User ID cannot be empty!';
-            break;
-          case 'number.integer':
-            err.message = 'User ID must be an integer!';
-            break;
-          case 'number.min':
-            err.message = `User ID must be at least ${err.local.limit}!`;
-            break;
-          default:
-            break;
-        }
-      });
-      return errors;
-    }),
 });
 
 const tweetUpdateSchema = Joi.object().keys({

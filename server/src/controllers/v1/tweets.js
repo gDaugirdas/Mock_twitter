@@ -5,6 +5,10 @@ const { dbConfig } = require('../../config');
 const { tweetPostSchema, tweetUpdateSchema } = require('../../schemas');
 
 const getTweets = async (req, res) => {
+  const { page } = req.params;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
   try {
     const query = `
     SELECT bf_users.first_name, bf_users.profile_picture, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.id, bf_tweets.user_id, SUM(bf_likes.liked) AS likes
@@ -17,7 +21,8 @@ const getTweets = async (req, res) => {
     ON bf_tweets.id = bf_likes.tweet_id
     GROUP BY bf_tweets.id
     ORDER BY bf_tweets.created_at DESC
-    LIMIT 20
+    LIMIT ${limit}
+    OFFSET ${offset}
     `;
 
     const con = await mysql.createConnection(dbConfig);
@@ -61,8 +66,28 @@ const getTweet = async (req, res) => {
   }
 };
 
+const getTweetCount = async (req, res) => {
+  try {
+    const query = `
+    SELECT COUNT(*) AS count
+    FROM bf_tweets
+    `;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.length === 0
+      ? res.status(404).send({ err: 'Tweets not found' })
+      : res.send(data);
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
 const postTweet = async (req, res) => {
   let userInput = req.body;
+  const userId = req.user.id;
 
   try {
     userInput = await tweetPostSchema.validateAsync(userInput);
@@ -74,9 +99,7 @@ const postTweet = async (req, res) => {
   try {
     const query = `INSERT INTO bf_tweets (tweet_text, tweet_attachment, user_id) VALUES (${mysql.escape(
       userInput.tweet_text,
-    )}, ${mysql.escape(userInput.tweet_attachment)}, ${mysql.escape(
-      userInput.user_id,
-    )})`;
+    )}, ${mysql.escape(userInput.tweet_attachment)}, ${mysql.escape(userId)})`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
@@ -84,7 +107,7 @@ const postTweet = async (req, res) => {
 
     return data.affectedRows === 0
       ? res.status(404).send({ err: 'Tweet post was unsuccessful' })
-      : res.send(data);
+      : res.send({ data, msg: 'Tweet posted successfully' });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
@@ -178,4 +201,11 @@ const deleteTweet = async (req, res) => {
   }
 };
 
-module.exports = { getTweets, getTweet, postTweet, updateTweet, deleteTweet };
+module.exports = {
+  getTweets,
+  getTweet,
+  getTweetCount,
+  postTweet,
+  updateTweet,
+  deleteTweet,
+};

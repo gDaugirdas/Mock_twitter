@@ -9,7 +9,9 @@ const getUser = async (req, res) => {
 
   const getUserData = async () => {
     try {
-      const query = `SELECT bf_users.id, bf_users.first_name, bf_users.last_name, bf_users.email, bf_users.profile_picture, bf_users.created_at FROM bf_users WHERE id = ${id}`;
+      const query = `SELECT bf_users.id, bf_users.first_name, bf_users.last_name, bf_users.email, bf_users.profile_picture, bf_users.created_at FROM bf_users WHERE id = ${mysql.escape(
+        id,
+      )}`;
 
       const con = await mysql.createConnection(dbConfig);
       const [data] = await con.execute(query);
@@ -23,7 +25,9 @@ const getUser = async (req, res) => {
 
   const getUserImages = async () => {
     try {
-      const query = `SELECT id, image_url FROM bf_profile_images WHERE user_id = ${id}`;
+      const query = `SELECT id, image_url FROM bf_profile_images WHERE user_id = ${mysql.escape(
+        id,
+      )}`;
 
       const con = await mysql.createConnection(dbConfig);
       const [data] = await con.execute(query);
@@ -63,7 +67,9 @@ const postProfilePicture = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const query = `UPDATE bf_users SET profile_picture = '${imageUrl}' WHERE id = ${userId}`;
+    const query = `UPDATE bf_users SET profile_picture = ${mysql.escape(
+      imageUrl,
+    )} WHERE id = ${mysql.escape(userId)}`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
@@ -93,19 +99,54 @@ const postProfileGalleryPicture = async (req, res) => {
     });
   }
 
+  const userId = req.user.id;
+
   try {
-    const query = `INSERT INTO bf_profile_images (user_id, image_url) VALUES (${req.user.id}, '${imageUrl}')`;
+    const query = `INSERT INTO bf_profile_images (user_id, image_url) VALUES (${mysql.escape(
+      userId,
+    )}, ${mysql.escape(imageUrl)})`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
     await con.end();
 
     return data.affectedRows === 0
-      ? res.status(500).send({ err: "Image wasn't uploaded to profile" })
-      : res.send({ msg: 'Image uploaded!', imageUrl: imageUrl });
+      ? res.status(500).send({ err: "Gallery image wasn't uploaded" })
+      : res.send({
+          msg: 'Gallery image uploaded',
+          imageUrl: imageUrl,
+          id: data.insertId,
+        });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
 };
 
-module.exports = { getUser, postProfilePicture, postProfileGalleryPicture };
+const deleteProfileGalleryPicture = async (req, res) => {
+  const userId = req.user.id;
+
+  const { id } = req.params;
+
+  try {
+    const query = `DELETE FROM bf_profile_images WHERE user_id = ${mysql.escape(
+      userId,
+    )} AND id = ${mysql.escape(id)}`;
+
+    const con = await mysql.createConnection(dbConfig);
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.affectedRows === 0
+      ? res.status(500).send({ err: "Gallery image wasn't deleted" })
+      : res.send({ msg: 'Gallery image deleted' });
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
+module.exports = {
+  getUser,
+  postProfilePicture,
+  postProfileGalleryPicture,
+  deleteProfileGalleryPicture,
+};

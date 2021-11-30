@@ -11,6 +11,7 @@ const {
   getUser,
   postProfilePicture,
   postProfileGalleryPicture,
+  deleteProfileGalleryPicture,
 } = require('../../controllers/v1');
 
 router.use(multerConfig.single('file'));
@@ -21,5 +22,11 @@ router.get('/:id', isLoggedIn, getUser);
 router.post('/profilePicture', isLoggedIn, postProfilePicture);
 
 router.post('/profileGalleryPicture', isLoggedIn, postProfileGalleryPicture);
+
+router.delete(
+  '/profileGalleryPicture/:id',
+  isLoggedIn,
+  deleteProfileGalleryPicture,
+);
 
 module.exports = router;
