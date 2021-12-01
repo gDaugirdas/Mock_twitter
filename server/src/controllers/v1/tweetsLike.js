@@ -2,6 +2,28 @@ const mysql = require('mysql2/promise');
 
 const { dbConfig } = require('../../config');
 
+const getTweetLike = async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+
+  try {
+    const con = await mysql.createConnection(dbConfig);
+
+    const query = `SELECT * FROM bf_likes WHERE tweet_id = ${mysql.escape(
+      id,
+    )} AND user_id = ${mysql.escape(user.id)}`;
+
+    const [data] = await con.execute(query);
+    await con.end();
+
+    return data.length === 0
+      ? res.send({ liked: false })
+      : res.send({ liked: true });
+  } catch (err) {
+    return res.status(500).send({ err: 'Server error' });
+  }
+};
+
 const postTweetLike = async (req, res) => {
   const user = req.user;
   const { id } = req.params;
@@ -56,4 +78,4 @@ const postTweetLike = async (req, res) => {
   }
 };
 
-module.exports = { postTweetLike };
+module.exports = { getTweetLike, postTweetLike };

@@ -101,24 +101,6 @@ const updateTweet = async (req, res) => {
   let userInput = req.body;
 
   try {
-    const query = `SELECT user_id FROM bf_tweets WHERE id = ${mysql.escape(
-      id,
-    )}`;
-
-    const con = await mysql.createConnection(dbConfig);
-    const [data] = await con.execute(query);
-    await con.end();
-
-    if (data[0].user_id !== user.id) {
-      return res.status(401).send({
-        err: 'You are not authorized to edit this tweet',
-      });
-    }
-  } catch (err) {
-    return res.status(500).send({ err: 'Server error' });
-  }
-
-  try {
     userInput = await tweetUpdateSchema.validateAsync(userInput);
   } catch (err) {
     return res.status(400).send({
@@ -131,7 +113,7 @@ const updateTweet = async (req, res) => {
       userInput.tweet_text,
     )}, tweet_attachment = ${mysql.escape(
       userInput.tweet_attachment,
-    )} WHERE id = ${mysql.escape(id)}`;
+    )} WHERE id = ${mysql.escape(user.id)} AND user_id = ${mysql.escape(id)}`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
@@ -139,7 +121,7 @@ const updateTweet = async (req, res) => {
 
     return data.affectedRows === 0
       ? res.status(404).send({ err: 'Tweet update was unsuccessful' })
-      : res.send(data);
+      : res.send({ msg: 'Tweet updated' });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
@@ -150,25 +132,9 @@ const deleteTweet = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const query = `SELECT user_id FROM bf_tweets WHERE id = ${mysql.escape(
+    const query = `DELETE FROM bf_tweets WHERE id = ${mysql.escape(
       id,
-    )}`;
-
-    const con = await mysql.createConnection(dbConfig);
-    const [data] = await con.execute(query);
-    await con.end();
-
-    if (data[0].user_id !== user.id) {
-      return res
-        .status(403)
-        .send({ err: 'You are not authorized to delete this tweet' });
-    }
-  } catch (err) {
-    return res.status(500).send({ err: 'Server error' });
-  }
-
-  try {
-    const query = `DELETE FROM bf_tweets WHERE id = ${mysql.escape(id)}`;
+    )} AND user_id = ${mysql.escape(id)}`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);

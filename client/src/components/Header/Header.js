@@ -16,8 +16,6 @@ const Header = () => {
 		}
 	}, [authContext.token]);
 
-	console.log(localStorage.getItem('token'));
-
 	const [isOpen, setIsOpen] = useState(false);
 
 	const noUserPages = [
@@ -34,7 +32,7 @@ const Header = () => {
 	const userPages = [
 		{
 			title: 'Home',
-			href: '/',
+			href: '/home/1',
 		},
 		{
 			title: 'Profile',

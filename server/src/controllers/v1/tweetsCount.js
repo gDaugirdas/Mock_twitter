@@ -13,7 +13,7 @@ const getTweetsCount = async (req, res) => {
     const [data] = await con.execute(query);
     await con.end();
 
-    return data.length === 0
+    return data[0].count === 0
       ? res.status(404).send({ err: 'Tweets not found' })
       : res.send(data);
   } catch (err) {

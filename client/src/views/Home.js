@@ -20,6 +20,7 @@ const Home = () => {
 	const [status, setStatus] = useState();
 	const [loading, setLoading] = useState(true);
 	const [refetch, setRefetch] = useState(false);
+	const [pageCount, setPageCount] = useState();
 	const [newTweet, setNewTweet] = useState();
 
 	const authContext = useContext(AuthContext);
@@ -27,20 +28,28 @@ const Home = () => {
 	const { page } = useParams();
 
 	useEffect(() => {
-		axios
-			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/' + page, {
+		const URLs = [
+			process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/' + page,
+			process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/count',
+		];
+
+		const fetchUrl = (url) => {
+			console.log('fetch');
+			return axios.get(url, {
 				headers: {
 					Authorization: 'Bearer ' + authContext.token,
 				},
-			})
-			.then((response) => {
-				if (response.data.length === 0) {
-					setStatus(404);
-					setNotification('No tweets found');
-					return;
-				}
-				console.log(response.data);
-				return setTweets(response.data);
+			});
+		};
+
+		const promiseArray = URLs.map(fetchUrl);
+
+		Promise.all(promiseArray)
+			.then((data) => {
+				const tweets = data[0].data;
+				const count = data[1].data[0].count;
+				setTweets(tweets);
+				setPageCount(count);
 			})
 			.catch((err) => {
 				setNotification(err.response.data.err);
@@ -137,7 +146,7 @@ const Home = () => {
 				</Container>
 			</Section>
 			<Section>
-				<PaginatedItems />
+				<PaginatedItems pageCount={pageCount} />
 				<Container>
 					{tweets &&
 						tweets.map((tweet) => (

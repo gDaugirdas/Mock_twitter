@@ -10,7 +10,7 @@ const {
 
 const { getTweetsCount } = require('./tweetsCount');
 
-const { postTweetLike } = require('./tweetsLike');
+const { getTweetLike, postTweetLike } = require('./tweetsLike');
 
 const { getUser } = require('./user');
 
@@ -26,6 +26,7 @@ module.exports = {
   getTweets,
   getTweet,
   getTweetsCount,
+  getTweetLike,
   postTweet,
   postTweetLike,
   updateTweet,

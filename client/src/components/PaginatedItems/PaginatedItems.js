@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const PaginatedItems = ({ pageCount }) => {
 	let navigate = useNavigate();
-	pageCount = 32;
 
 	const handlePageClick = (event) => {
 		navigate(`/home/${event.selected + 1}`);

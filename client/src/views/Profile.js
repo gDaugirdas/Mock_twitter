@@ -26,7 +26,7 @@ const Profile = () => {
 			formData.append('file', acceptedFiles[0]);
 			setLoading(true);
 			axios
-				.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/profilePicture', formData, {
+				.put(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/pictures/profile', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data',
 						Authorization: 'Bearer ' + authContext.token,
@@ -57,7 +57,7 @@ const Profile = () => {
 			formData.append('file', acceptedFiles[0]);
 			setLoading(true);
 			axios
-				.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/profileGalleryPicture', formData, {
+				.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/pictures/gallery', formData, {
 					headers: {
 						'Content-Type': 'multipart/form-data',
 						Authorization: 'Bearer ' + authContext.token,
@@ -85,7 +85,7 @@ const Profile = () => {
 	const handleDelete = (id) => {
 		setLoading(true);
 		axios
-			.delete(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/profileGalleryPicture/' + id, {
+			.delete(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/pictures/gallery/' + id, {
 				headers: {
 					Authorization: 'Bearer ' + authContext.token,
 				},
