@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as S from './Form.styles';
 
-const Form = ({ heading, children, handleSubmit }) => {
+const Form = ({ heading, children, handleSubmit, className }) => {
 	return (
-		<S.SFormWrapper>
+		<S.SFormWrapper className={className}>
 			{heading && <S.SHeading>{heading}</S.SHeading>}
 			<form onSubmit={handleSubmit}>{children}</form>
 		</S.SFormWrapper>

@@ -4,6 +4,7 @@ const tweetsCount = require('./tweetsCount');
 const tweetsLike = require('./tweetsLike');
 const user = require('./user');
 const userPictures = require('./userPictures');
+const comments = require('./comments');
 
 module.exports = {
   auth,
@@ -12,4 +13,5 @@ module.exports = {
   tweetsLike,
   user,
   userPictures,
+  comments,
 };

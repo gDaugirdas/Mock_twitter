@@ -1,15 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import {
-	Main,
-	Section,
-	Container,
-	Loader,
-	Notification,
-	Button,
-	Form,
-	FormGroupTextarea,
-	PaginatedItems,
-} from '../components';
+import { Main, Section, Container, Loader, Notification, PaginatedItems, NewTweetForm, Tweet } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -18,7 +8,7 @@ const Home = () => {
 	const [tweets, setTweets] = useState();
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [refetch, setRefetch] = useState(false);
 	const [pageCount, setPageCount] = useState();
 	const [newTweet, setNewTweet] = useState();
@@ -34,7 +24,6 @@ const Home = () => {
 		];
 
 		const fetchUrl = (url) => {
-			console.log('fetch');
 			return axios.get(url, {
 				headers: {
 					Authorization: 'Bearer ' + authContext.token,
@@ -55,37 +44,11 @@ const Home = () => {
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
 				return;
-			})
-			.finally(() => {
-				setLoading(false);
 			});
-
 		return () => {
 			setRefetch(false);
 		};
 	}, [authContext.token, refetch, page]);
-
-	const handleLike = (id) => {
-		axios
-			.post(
-				process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/like/' + id,
-				{},
-				{
-					headers: {
-						Authorization: 'Bearer ' + authContext.token,
-					},
-				}
-			)
-			.catch((err) => {
-				setNotification(err.response.data.err);
-				setStatus(err.response.status);
-				return;
-			})
-			.finally(() => {
-				setLoading(false);
-				setRefetch(true);
-			});
-	};
 
 	const handleTweetSubmit = (e) => {
 		e.preventDefault();
@@ -111,10 +74,6 @@ const Home = () => {
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
 				return;
-			})
-
-			.finally(() => {
-				setLoading(false);
 			});
 	};
 
@@ -123,44 +82,26 @@ const Home = () => {
 			{notification && status && <Notification notificationText={notification} status={status} />}
 			{loading && <Loader />}
 			<Section>
-				<Container>
-					<Form handleSubmit={handleTweetSubmit} heading='New tweet'>
-						<FormGroupTextarea
-							labelText='New tweet'
-							htmlFor='tweet_text'
-							textareaPlaceholder='My new tweet...'
-							handleChange={(e) => setNewTweet({ ...newTweet, tweet_text: e.target.value.trim() })}
-							required
-						/>
-						<FormGroupTextarea
-							labelText='Tweet image'
-							htmlFor='tweet_text'
-							textareaPlaceholder='Insert image link here...'
-							handleChange={(e) => setNewTweet({ ...newTweet, tweet_attachment: e.target.value.trim() })}
-						/>
-
-						<Button type='submit' isDisabled={loading}>
-							Post Tweet
-						</Button>
-					</Form>
-				</Container>
+				<NewTweetForm
+					handleTweetSubmit={handleTweetSubmit}
+					setNewTweet={setNewTweet}
+					newTweet={newTweet}
+					loading={loading}
+				/>
 			</Section>
 			<Section>
-				<PaginatedItems pageCount={pageCount} />
+				<PaginatedItems pageCount={pageCount} page={page} />
 				<Container>
 					{tweets &&
 						tweets.map((tweet) => (
-							<div key={tweet.id}>
-								<p>Posted by: {tweet.first_name}</p>
-								<p>Text: {tweet.tweet_text}</p>
-								{tweet.attachment && <p>{tweet.attachment}</p>}
-								<p>
-									Likes: {tweet.likes}
-									<Button handleClick={() => handleLike(tweet.id)}>Like</Button>
-								</p>
-								<p>Posted at: {tweet.created_at}</p>
-								<hr />
-							</div>
+							<Tweet
+								key={tweet.id}
+								tweet={tweet}
+								loading={loading}
+								setLoading={setLoading}
+								setNotification={setNotification}
+								setStatus={setStatus}
+							/>
 						))}
 				</Container>
 			</Section>

@@ -4,9 +4,9 @@ const router = express.Router();
 
 const { isLoggedIn } = require('../../middleware/isLoggedIn');
 
-const { getTweetLike, postTweetLike } = require('../../controllers/v1');
+const { getTweetLikes, postTweetLike } = require('../../controllers/v1');
 
-router.get('/:id', isLoggedIn, getTweetLike);
+router.get('/:id', isLoggedIn, getTweetLikes);
 
 router.post('/:id', isLoggedIn, postTweetLike);
 

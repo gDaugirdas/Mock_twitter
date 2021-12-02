@@ -1,8 +1,9 @@
 import React from 'react';
-import ReactPaginate from 'react-paginate';
+import * as S from './PaginatedItems.styled';
 import { useNavigate } from 'react-router-dom';
+import { Container } from '../';
 
-const PaginatedItems = ({ pageCount }) => {
+const PaginatedItems = ({ pageCount, page }) => {
 	let navigate = useNavigate();
 
 	const handlePageClick = (event) => {
@@ -10,16 +11,18 @@ const PaginatedItems = ({ pageCount }) => {
 	};
 
 	return (
-		<>
-			{/* <Items currentItems={currentItems} /> */}
-			<ReactPaginate
+		<Container>
+			<S.SReactPaginate
 				breakLabel='...'
 				onPageChange={handlePageClick}
 				pageRangeDisplayed={2}
 				pageCount={pageCount / 10}
 				renderOnZeroPageCount={null}
+				nextLabel={'>'}
+				previousLabel={'<'}
+				initialPage={page - 1}
 			/>
-		</>
+		</Container>
 	);
 };
 

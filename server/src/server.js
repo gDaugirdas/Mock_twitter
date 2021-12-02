@@ -13,6 +13,7 @@ const {
   tweets,
   tweetsCount,
   tweetsLike,
+  comments,
   user,
   userPictures,
 } = require('./routes/v1');
@@ -21,6 +22,7 @@ app.use('/v1/api/auth', auth);
 app.use('/v1/api/tweets/count', tweetsCount);
 app.use('/v1/api/tweets/like', tweetsLike);
 app.use('/v1/api/tweets', tweets);
+app.use('/v1/api/comments', comments);
 app.use('/v1/api/user', user);
 app.use('/v1/api/user/pictures', userPictures);
 

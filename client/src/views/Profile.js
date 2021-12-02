@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Main, Section, Loader, Notification, UserMain, ImageGallery } from '../components';
+import { Main, Section, Loader, Notification, UserMain } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -10,7 +10,6 @@ const Profile = () => {
 	const [status, setStatus] = useState();
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState();
-	const [userImages, setUserImages] = useState();
 
 	const authContext = useContext(AuthContext);
 
@@ -51,62 +50,6 @@ const Profile = () => {
 		[authContext.token, user]
 	);
 
-	const onGalleryDrop = useCallback(
-		(acceptedFiles) => {
-			const formData = new FormData();
-			formData.append('file', acceptedFiles[0]);
-			setLoading(true);
-			axios
-				.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/pictures/gallery', formData, {
-					headers: {
-						'Content-Type': 'multipart/form-data',
-						Authorization: 'Bearer ' + authContext.token,
-					},
-				})
-				.then((res) => {
-					if (res.status === 200) {
-						setUserImages([...userImages, { image_url: res.data.imageUrl, id: res.data.id }]);
-						setNotification(res.data.msg);
-						setStatus(res.status);
-					}
-				})
-				.catch((err) => {
-					setNotification(err.response.data.err);
-					setStatus(err.response.status);
-					return;
-				})
-				.finally(() => {
-					setLoading(false);
-				});
-		},
-		[authContext.token, userImages]
-	);
-
-	const handleDelete = (id) => {
-		setLoading(true);
-		axios
-			.delete(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/pictures/gallery/' + id, {
-				headers: {
-					Authorization: 'Bearer ' + authContext.token,
-				},
-			})
-			.then((res) => {
-				if (res.status === 200) {
-					setUserImages(userImages.filter((image) => image.id !== id));
-					setNotification(res.data.msg);
-					setStatus(res.status);
-				}
-			})
-			.catch((err) => {
-				setNotification(err.response.data.err);
-				setStatus(err.response.status);
-				return;
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	};
-
 	useEffect(() => {
 		axios
 			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/' + id, {
@@ -122,7 +65,6 @@ const Profile = () => {
 				}
 				console.log(response.data);
 				setUser(response.data.user);
-				setUserImages(response.data.images);
 				return;
 			})
 			.catch((err) => {
@@ -143,14 +85,6 @@ const Profile = () => {
 				<>
 					<Section>
 						<UserMain user={user} onDrop={onProfileDrop} isCurrentUser={isCurrentUser} />
-					</Section>
-					<Section>
-						<ImageGallery
-							images={userImages}
-							isCurrentUser={isCurrentUser}
-							onDrop={onGalleryDrop}
-							handleDelete={handleDelete}
-						/>
 					</Section>
 				</>
 			)}

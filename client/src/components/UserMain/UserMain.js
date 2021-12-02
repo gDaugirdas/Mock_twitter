@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as S from './UserMain.styles';
-import { Container, UserImage, Dropzone } from '..';
+import { Container, Dropzone } from '..';
 
 const UserMain = ({ user, onDrop, isCurrentUser }) => {
 	return (
@@ -10,10 +10,9 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 				<>
 					<S.SUserHero>
 						<S.SUserImageWrapper>
-							<UserImage
+							<S.SUserImage
 								userImageUrl={user[0].profile_picture}
 								userImageAlt={user[0].profile_picture && 'User profile picture'}
-								size='large'
 							/>
 							{isCurrentUser && (
 								<Dropzone

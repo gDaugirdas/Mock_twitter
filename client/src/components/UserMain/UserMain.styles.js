@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { media } from '../../styles';
+import { UserImage } from '../';
 
 export const SUserHero = styled.div`
 	text-align: center;
@@ -8,9 +9,17 @@ export const SUserHero = styled.div`
     `}
 `;
 
+export const SUserImage = styled(UserImage)`
+	width: 14rem;
+	height: 14rem;
+	${media.sm_up`
+		width: 20rem;
+		height: 20rem;
+	`}
+`;
+
 export const SUserImageWrapper = styled.div`
 	flex: 2;
-	align-self: center;
 `;
 
 export const STextWrapper = styled.div`

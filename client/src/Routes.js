@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from 'styled-components';
 import AuthProvider from './contexts/AuthContext';
 import { GlobalStyles, theme } from './styles';
-import { Header, PrivateRoute, Loader } from './components';
+import { Header, Footer, PrivateRoute, Loader } from './components';
 
 const LazyHome = lazy(() => import('./views/Home.js'));
 const LazyLogin = lazy(() => import('./views/Login.js'));
@@ -62,6 +62,7 @@ const PageRouter = () => {
 							<Route path='*' element={<Navigate replace to='/home/1' />}></Route>
 						</Routes>
 					</Suspense>
+					<Footer />
 				</Router>
 			</AuthProvider>
 		</ThemeProvider>
