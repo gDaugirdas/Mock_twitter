@@ -16,9 +16,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 	const [inputs, setInputs] = useState();
-	const [loading, setLoading] = useState(false);
+
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
+
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -38,7 +40,11 @@ const Signup = () => {
 			.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/auth/register', inputs)
 			.then((res) => {
 				if (res.status === 200) {
-					return navigate('/login');
+					setStatus(res.status);
+					setNotification(res.data.msg);
+					setTimeout(() => {
+						return navigate('/login');
+					}, 2000);
 				}
 			})
 			.catch((err) => {

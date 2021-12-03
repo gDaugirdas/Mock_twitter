@@ -17,9 +17,11 @@ import validateEmail from '../utils/utils';
 
 const Login = () => {
 	const [inputs, setInputs] = useState();
-	const [loading, setLoading] = useState(false);
+
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
+
+	const [loading, setLoading] = useState(false);
 
 	const authContext = useContext(AuthContext);
 

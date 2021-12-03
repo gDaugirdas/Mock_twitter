@@ -7,8 +7,7 @@ import {
 	Notification,
 	Tweet as TweetComponent,
 	Comment,
-	NewCommentForm,
-	EditCommentForm,
+	AccordionForm,
 	Button,
 } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
@@ -19,11 +18,14 @@ import { useNavigate } from 'react-router-dom';
 
 const Tweet = () => {
 	const [tweet, setTweet] = useState();
+	const [editedTweet, setEditedTweet] = useState();
+
 	const [comments, setComments] = useState();
 	const [newComment, setNewComment] = useState();
-	const [editedTweet, setEditedTweet] = useState();
+
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
+
 	const [loading, setLoading] = useState(true);
 	const [refetch, setRefetch] = useState(false);
 
@@ -59,6 +61,10 @@ const Tweet = () => {
 			.finally(() => {
 				setLoading(false);
 			});
+
+		return () => {
+			setRefetch(false);
+		};
 	}, [authContext.token, id, refetch]);
 
 	const handleCommentSubmit = (e) => {
@@ -103,7 +109,7 @@ const Tweet = () => {
 			})
 			.then((res) => {
 				if (res.status === 200) {
-					setTweet({ ...tweet, tweet_text: editedTweet.tweet_text });
+					setRefetch(true);
 					setNotification(res.data.msg);
 					setStatus(res.status);
 					setNewComment();
@@ -124,6 +130,10 @@ const Tweet = () => {
 	};
 
 	const handleTweetDelete = () => {
+		const confirm = window.confirm('Are you sure you want to delete this tweet?');
+
+		if (!confirm) return;
+
 		setLoading(true);
 		axios
 			.delete(process.env.REACT_APP_BASE_API_URL + `v1/api/tweets/tweet/${id}`, {
@@ -133,7 +143,11 @@ const Tweet = () => {
 			})
 			.then((res) => {
 				if (res.status === 200) {
-					return navigate('/home/1');
+					setStatus(res.status);
+					setNotification(res.data.msg);
+					setTimeout(() => {
+						return navigate('/home/1');
+					}, 2000);
 				}
 			})
 			.catch((err) => {
@@ -146,36 +160,61 @@ const Tweet = () => {
 				setLoading(false);
 			});
 	};
+
 	return (
 		<Main>
 			{notification && status && <Notification notificationText={notification} status={status} />}
 			{loading && <Loader />}
+			{isOwner && (
+				<Section>
+					<Container>
+						<AccordionForm
+							handleSubmit={handleEditTweetSubmit}
+							handleChange={(e) => setEditedTweet({ tweet_text: e.target.value.trim() })}
+							loading={loading}
+							buttonText='Edit tweet'
+							inputLabel='Edit your tweet'
+							inputHtmlFor='edit_tweet'
+							inputPlaceholder='My edited tweet...'
+						/>
+					</Container>
+				</Section>
+			)}
 			<Section>
 				<Container>
-					{isOwner && (
-						<div>
-							<EditCommentForm
-								handleEditTweetSubmit={handleEditTweetSubmit}
-								setEditedTweet={setEditedTweet}
-								loading={loading}
-							/>
-							<Button handleClick={handleTweetDelete}>Delete</Button>
-						</div>
-					)}
 					{tweet && (
-						<TweetComponent
-							tweet={tweet}
-							loading={loading}
-							setLoading={setLoading}
-							setNotification={setNotification}
-							setStatus={setStatus}
-						/>
+						<>
+							<TweetComponent
+								tweet={tweet}
+								loading={loading}
+								setLoading={setLoading}
+								setNotification={setNotification}
+								setStatus={setStatus}
+							/>
+							{isOwner && (
+								<Button handleClick={handleTweetDelete} isDisabled={loading}>
+									Delete
+								</Button>
+							)}
+						</>
 					)}
-					<NewCommentForm
-						handleCommentSubmit={handleCommentSubmit}
-						setNewComment={setNewComment}
+				</Container>
+			</Section>
+			<Section>
+				<Container>
+					<AccordionForm
+						handleSubmit={handleCommentSubmit}
+						handleChange={(e) => setNewComment({ comment: e.target.value.trim() })}
 						loading={loading}
+						buttonText='New comment'
+						inputLabel='Post new comment'
+						inputHtmlFor='new_comment'
+						inputPlaceholder='My new comment...'
 					/>
+				</Container>
+			</Section>
+			<Section>
+				<Container>
 					{comments && comments.map((comment) => <Comment key={comment.id} comment={comment} />)}
 				</Container>
 			</Section>

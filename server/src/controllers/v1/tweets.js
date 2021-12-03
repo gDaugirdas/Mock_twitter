@@ -221,11 +221,11 @@ const deleteTweetAndItsComments = async (req, res) => {
 
   try {
     const isTweetDeleted = await deleteTweet();
-
+    console.log(isTweetDeleted);
     isTweetDeleted && (await deleteTweetComments());
 
     return !isTweetDeleted
-      ? res.status(404).send({ err: 'Tweet not found' })
+      ? res.status(404).send({ err: 'Tweet deletion was unsuccessful' })
       : res.send({ msg: 'Tweet deleted' });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });

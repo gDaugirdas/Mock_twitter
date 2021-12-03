@@ -29,6 +29,10 @@ const Like = ({ tweetId, setNotification, setStatus }) => {
 			.finally(() => {
 				setLoading(false);
 			});
+		// Cleanup if component did not mount
+		return () => {
+			setLoading(false);
+		};
 	}, [authContext.token, tweetId, setStatus, setNotification]);
 
 	const handleLike = (id) => {

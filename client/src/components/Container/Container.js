@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as S from './Container.styles';
 
 const Container = ({ children, className }) => {
-	return <S.SContainer>{children}</S.SContainer>;
+	return <S.SContainer className={className}>{children}</S.SContainer>;
 };
 
 Container.propTypes = {

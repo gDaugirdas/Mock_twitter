@@ -30,7 +30,7 @@ const postRegister = async (req, res) => {
     await con.end();
 
     return data.affectedRows > 0
-      ? res.send({ msg: 'success' })
+      ? res.send({ msg: 'User created successfully' })
       : res
           .status(400)
           .send({ err: 'User was not created, please contact support' });

@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as S from './PaginatedItems.styled';
 import { useNavigate } from 'react-router-dom';
 import { Container } from '../';
+import { useParams } from 'react-router-dom';
 
-const PaginatedItems = ({ pageCount, page }) => {
-	let navigate = useNavigate();
+const PaginatedItems = ({ tweetsCount }) => {
+	const navigate = useNavigate();
+
+	const { page } = useParams();
+
+	const [selected, setSelected] = useState(page);
+
+	useEffect(() => {
+		navigate(`/home/${selected}`);
+	}, [selected, navigate]);
 
 	const handlePageClick = (event) => {
-		navigate(`/home/${event.selected + 1}`);
+		setSelected(event.selected + 1);
 	};
 
 	return (
@@ -16,11 +25,11 @@ const PaginatedItems = ({ pageCount, page }) => {
 				breakLabel='...'
 				onPageChange={handlePageClick}
 				pageRangeDisplayed={2}
-				pageCount={Math.ceil(pageCount / 10)}
+				pageCount={Math.ceil(tweetsCount / 10)}
 				renderOnZeroPageCount={null}
 				nextLabel={'>'}
 				previousLabel={'<'}
-				initialPage={page - 1}
+				initialPage={selected - 1}
 			/>
 		</Container>
 	);

@@ -6,10 +6,12 @@ import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 const Profile = () => {
+	const [user, setUser] = useState();
+
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
+
 	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState();
 
 	const authContext = useContext(AuthContext);
 
