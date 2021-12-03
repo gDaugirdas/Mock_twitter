@@ -8,7 +8,6 @@ import { Header, Footer, PrivateRoute, Loader } from './components';
 const LazyHome = lazy(() => import('./views/Home.js'));
 const LazyLogin = lazy(() => import('./views/Login.js'));
 const LazySignup = lazy(() => import('./views/Signup.js'));
-const LazyAdd = lazy(() => import('./views/Add'));
 const LazyProfile = lazy(() => import('./views/Profile'));
 const LazyTweet = lazy(() => import('./views/Tweet'));
 
@@ -27,15 +26,6 @@ const PageRouter = () => {
 								element={
 									<PrivateRoute>
 										<LazyHome />
-									</PrivateRoute>
-								}
-							/>
-							<Route
-								exact
-								path='/add'
-								element={
-									<PrivateRoute>
-										<LazyAdd />
 									</PrivateRoute>
 								}
 							/>

@@ -3,14 +3,14 @@ import * as S from './Like.styled';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const Like = ({ tweetId, setLoading, loading, setNotification, setStatus }) => {
+const Like = ({ tweetId, setNotification, setStatus }) => {
 	const [isLiked, setIsLiked] = useState(false);
 	const [likeSum, setLikeSum] = useState(0);
+	const [loading, setLoading] = useState(true);
 
 	const authContext = useContext(AuthContext);
 
 	useEffect(() => {
-		setLoading(true);
 		axios
 			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/like/' + tweetId, {
 				headers: {
@@ -29,7 +29,7 @@ const Like = ({ tweetId, setLoading, loading, setNotification, setStatus }) => {
 			.finally(() => {
 				setLoading(false);
 			});
-	}, [authContext.token, tweetId, setLoading, setStatus, setNotification]);
+	}, [authContext.token, tweetId, setStatus, setNotification]);
 
 	const handleLike = (id) => {
 		setLoading(true);
@@ -61,11 +61,21 @@ const Like = ({ tweetId, setLoading, loading, setNotification, setStatus }) => {
 
 	return (
 		<S.SLikeWrapper>
-			<S.SSpan>{likeSum || 0}</S.SSpan>
-			<S.SLikeChekbox checked={isLiked} id={tweetId} onChange={() => handleLike(tweetId)} disabled={loading} />
-			<S.SLikeLabel checked={isLiked} htmlFor={tweetId}>
-				❤
-			</S.SLikeLabel>
+			{loading && <S.SLoader />}
+			{!loading && (
+				<>
+					<S.SSpan>{likeSum || 0}</S.SSpan>
+					<S.SLikeChekbox
+						checked={isLiked}
+						id={tweetId}
+						onChange={() => handleLike(tweetId)}
+						disabled={loading}
+					/>
+					<S.SLikeLabel checked={isLiked} htmlFor={tweetId}>
+						❤
+					</S.SLikeLabel>
+				</>
+			)}
 		</S.SLikeWrapper>
 	);
 };

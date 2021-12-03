@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from './Tweet.styled';
 import { Like, CommentCount } from '../';
 
-const Tweet = ({ tweet, setLoading, loading, setNotification, setStatus }) => {
+const Tweet = ({ tweet, setNotification, setStatus }) => {
 	return (
 		<S.SWrapper>
 			<S.SUserImageWrapper>
@@ -16,13 +16,7 @@ const Tweet = ({ tweet, setLoading, loading, setNotification, setStatus }) => {
 				<S.SParagraph>{tweet.tweet_text}</S.SParagraph>
 
 				<S.SFooter>
-					<Like
-						tweetId={tweet.id}
-						setLoading={setLoading}
-						loading={loading}
-						setNotification={setNotification}
-						setStatus={setStatus}
-					/>
+					<Like tweetId={tweet.id} setNotification={setNotification} setStatus={setStatus} />
 					<CommentCount count={tweet.comment_count} />
 					<S.STweetLink to={'/tweets/' + tweet.id}>&#x2192;</S.STweetLink>
 				</S.SFooter>

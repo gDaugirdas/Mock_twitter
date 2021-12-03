@@ -12,12 +12,15 @@ import {
 } from '../components';
 import axios from 'axios';
 import validateEmail from '../utils/utils';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
 	const [inputs, setInputs] = useState();
 	const [loading, setLoading] = useState(false);
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
+
+	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -35,23 +38,17 @@ const Signup = () => {
 			.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/auth/register', inputs)
 			.then((res) => {
 				if (res.status === 200) {
-					setNotification('User created successfully!');
-					setStatus(res.status);
-					e.target.reset();
-					setInputs();
-					return;
+					return navigate('/login');
 				}
 			})
 			.catch((err) => {
 				if (!err.response) {
 					setNotification('Network error');
+					setLoading(false);
 					return;
 				}
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
-				return;
-			})
-			.finally(() => {
 				setLoading(false);
 			});
 	};

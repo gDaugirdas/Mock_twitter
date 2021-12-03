@@ -55,7 +55,7 @@ const getTweetsAndAllTheirCount = async (req, res) => {
     const tweets = await getTweets();
     const [tweetsCount] = await getTweetsCount();
 
-    return tweetsCount.count === 0
+    return tweetsCount.count === 0 || tweets.length === 0
       ? res.status(404).send({ err: 'No tweets found' })
       : res.send({ tweets, tweetsCount });
   } catch (err) {
@@ -183,21 +183,49 @@ const updateTweet = async (req, res) => {
   }
 };
 
-const deleteTweet = async (req, res) => {
+const deleteTweetAndItsComments = async (req, res) => {
   const userId = req.user.id;
   const { id } = req.params;
 
+  const deleteTweet = async () => {
+    try {
+      const query = `DELETE FROM bf_tweets WHERE id = ${mysql.escape(
+        id,
+      )} AND user_id = ${mysql.escape(userId)}`;
+
+      const con = await mysql.createConnection(dbConfig);
+      const [data] = await con.execute(query);
+      await con.end();
+
+      return data.affectedRows > 0;
+    } catch (err) {
+      return res.status(500).send({ err: 'Server error' });
+    }
+  };
+
+  const deleteTweetComments = async () => {
+    try {
+      const query = `DELETE FROM bf_comments WHERE tweet_id = ${mysql.escape(
+        id,
+      )}`;
+
+      const con = await mysql.createConnection(dbConfig);
+      const [data] = await con.execute(query);
+      await con.end();
+
+      return data;
+    } catch (err) {
+      return res.status(500).send({ err: 'Server error' });
+    }
+  };
+
   try {
-    const query = `DELETE FROM bf_tweets WHERE id = ${mysql.escape(
-      id,
-    )} AND user_id = ${mysql.escape(userId)}`;
+    const isTweetDeleted = await deleteTweet();
 
-    const con = await mysql.createConnection(dbConfig);
-    const [data] = await con.execute(query);
-    await con.end();
+    isTweetDeleted && (await deleteTweetComments());
 
-    return data.affectedRows === 0
-      ? res.status(404).send({ err: 'Tweet deletion was unsuccessful' })
+    return !isTweetDeleted
+      ? res.status(404).send({ err: 'Tweet not found' })
       : res.send({ msg: 'Tweet deleted' });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
@@ -209,5 +237,5 @@ module.exports = {
   getTweetAndItsComments,
   postTweet,
   updateTweet,
-  deleteTweet,
+  deleteTweetAndItsComments,
 };

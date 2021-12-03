@@ -5,7 +5,7 @@ const {
   getTweetAndItsComments,
   postTweet,
   updateTweet,
-  deleteTweet,
+  deleteTweetAndItsComments,
 } = require('./tweets');
 
 const { getTweetLikes, postTweetLike } = require('./tweetsLike');
@@ -25,7 +25,7 @@ module.exports = {
   postTweet,
   postTweetLike,
   updateTweet,
-  deleteTweet,
+  deleteTweetAndItsComments,
   postComment,
   getUser,
   updateProfilePicture,

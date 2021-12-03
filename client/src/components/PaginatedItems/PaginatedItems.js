@@ -16,7 +16,7 @@ const PaginatedItems = ({ pageCount, page }) => {
 				breakLabel='...'
 				onPageChange={handlePageClick}
 				pageRangeDisplayed={2}
-				pageCount={pageCount / 10}
+				pageCount={Math.ceil(pageCount / 10)}
 				renderOnZeroPageCount={null}
 				nextLabel={'>'}
 				previousLabel={'<'}

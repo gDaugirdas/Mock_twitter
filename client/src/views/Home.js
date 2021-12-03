@@ -8,7 +8,7 @@ const Home = () => {
 	const [tweets, setTweets] = useState();
 	const [notification, setNotification] = useState();
 	const [status, setStatus] = useState();
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [refetch, setRefetch] = useState(false);
 	const [pageCount, setPageCount] = useState();
 	const [newTweet, setNewTweet] = useState();
@@ -25,17 +25,20 @@ const Home = () => {
 				},
 			})
 			.then((res) => {
-				console.log(res.data.tweets);
 				setTweets(res.data.tweets);
 				setPageCount(res.data.tweetsCount.count);
 			})
 			.catch((err) => {
+				if (!err.response) {
+					setNotification('Network error');
+					return;
+				}
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
+			})
+			.finally(() => {
+				setLoading(false);
 			});
-		return () => {
-			setRefetch(false);
-		};
 	}, [authContext.token, refetch, page]);
 
 	const handleTweetSubmit = (e) => {
@@ -50,7 +53,6 @@ const Home = () => {
 			})
 			.then((res) => {
 				if (res.status === 200) {
-					console.log(res.data);
 					setNotification(res.data.msg);
 					setStatus(res.status);
 					setRefetch(true);
@@ -59,9 +61,12 @@ const Home = () => {
 				}
 			})
 			.catch((err) => {
+				if (!err.response) {
+					setNotification('Network error');
+					return;
+				}
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
-				return;
 			});
 	};
 
@@ -69,30 +74,34 @@ const Home = () => {
 		<Main>
 			{notification && status && <Notification notificationText={notification} status={status} />}
 			{loading && <Loader />}
-			<Section>
-				<NewTweetForm
-					handleTweetSubmit={handleTweetSubmit}
-					setNewTweet={setNewTweet}
-					newTweet={newTweet}
-					loading={loading}
-				/>
-			</Section>
-			<Section>
-				<PaginatedItems pageCount={pageCount} page={page} />
-				<Container>
-					{tweets &&
-						tweets.map((tweet) => (
-							<Tweet
-								key={tweet.id}
-								tweet={tweet}
-								loading={loading}
-								setLoading={setLoading}
-								setNotification={setNotification}
-								setStatus={setStatus}
-							/>
-						))}
-				</Container>
-			</Section>
+			{!loading && (
+				<>
+					<Section>
+						<NewTweetForm
+							handleTweetSubmit={handleTweetSubmit}
+							setNewTweet={setNewTweet}
+							newTweet={newTweet}
+							loading={loading}
+						/>
+					</Section>
+					<Section>
+						{pageCount && <PaginatedItems pageCount={pageCount} page={page} />}
+						<Container>
+							{tweets &&
+								tweets.map((tweet) => (
+									<Tweet
+										key={tweet.id}
+										tweet={tweet}
+										loading={loading}
+										setLoading={setLoading}
+										setNotification={setNotification}
+										setStatus={setStatus}
+									/>
+								))}
+						</Container>
+					</Section>
+				</>
+			)}
 		</Main>
 	);
 };

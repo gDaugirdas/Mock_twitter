@@ -42,25 +42,18 @@ const Login = () => {
 				if (res.status === 200) {
 					authContext.setToken(res.data.token);
 					localStorage.setItem('token', res.data.token);
-					setNotification(res.data.msg);
-					setStatus(res.status);
 					return navigate('/');
 				}
 			})
 			.catch((err) => {
 				if (!err.response) {
 					setNotification('Network error');
-					e.target.reset();
-					setInputs();
 					setLoading(false);
 					return;
 				}
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
-				e.target.reset();
-				setInputs();
 				setLoading(false);
-				return;
 			});
 	};
 

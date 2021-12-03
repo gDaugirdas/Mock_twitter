@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as S from './EditCommentForm.styles';
 import { Container, FormGroupTextarea, Accordion, Button } from '../';
 
-const EditCommentForm = ({ handleEditCommentSubmit, setEditedComment, loading }) => {
+const EditCommentForm = ({ handleEditTweetSubmit, setEditedTweet, loading }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleClick = () => {
@@ -15,12 +15,12 @@ const EditCommentForm = ({ handleEditCommentSubmit, setEditedComment, loading })
 			</S.SButtonWrapper>
 
 			<Accordion isOpen={isOpen}>
-				<S.SForm handleSubmit={handleEditCommentSubmit} heading='Edit comment'>
+				<S.SForm handleSubmit={handleEditTweetSubmit} heading='Edit comment'>
 					<FormGroupTextarea
 						labelText='Comment text'
 						htmlFor='comment_text'
 						textareaPlaceholder='My edited Comment...'
-						handleChange={(e) => setEditedComment({ tweet_text: e.target.value.trim() })}
+						handleChange={(e) => setEditedTweet({ tweet_text: e.target.value.trim() })}
 						required
 					/>
 					<Button type='submit' isDisabled={loading}>

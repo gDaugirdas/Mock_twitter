@@ -24,7 +24,7 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 							</S.SUserParagraph>
 							<S.SUserParagraph>
 								<S.SUserSpan> Created at: </S.SUserSpan>
-								{user.created_at.split('T')[0]}
+								{user.created_at}
 							</S.SUserParagraph>
 							{isCurrentUser && (
 								<Dropzone
@@ -42,7 +42,7 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 };
 
 UserMain.propTypes = {
-	user: PropTypes.arrayOf(PropTypes.object).isRequired,
+	user: PropTypes.object,
 	onDrop: PropTypes.func.isRequired,
 	isCurrentUser: PropTypes.bool.isRequired,
 };

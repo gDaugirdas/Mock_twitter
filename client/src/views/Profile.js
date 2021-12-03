@@ -19,7 +19,30 @@ const Profile = () => {
 
 	const isCurrentUser = Number(id) === currentUser;
 
-	const onProfileDrop = useCallback(
+	useEffect(() => {
+		axios
+			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/' + id, {
+				headers: {
+					Authorization: 'Bearer ' + authContext.token,
+				},
+			})
+			.then((res) => {
+				setUser(res.data.user);
+			})
+			.catch((err) => {
+				if (!err.response) {
+					setNotification('Network error');
+					return;
+				}
+				setNotification(err.response.data.err);
+				setStatus(err.response.status);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, [authContext.token, id]);
+
+	const onImageDrop = useCallback(
 		(acceptedFiles) => {
 			const formData = new FormData();
 			formData.append('file', acceptedFiles[0]);
@@ -33,15 +56,18 @@ const Profile = () => {
 				})
 				.then((res) => {
 					if (res.status === 200) {
-						setUser([{ ...user[0], profile_picture: res.data.imageUrl }]);
+						setUser({ ...user, profile_picture: res.data.imageUrl });
 						setNotification(res.data.msg);
 						setStatus(res.status);
 					}
 				})
 				.catch((err) => {
+					if (!err.response) {
+						setNotification('Network error');
+						return;
+					}
 					setNotification(err.response.data.err);
 					setStatus(err.response.status);
-					return;
 				})
 				.finally(() => {
 					setLoading(false);
@@ -50,37 +76,14 @@ const Profile = () => {
 		[authContext.token, user]
 	);
 
-	useEffect(() => {
-		axios
-			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/user/' + id, {
-				headers: {
-					Authorization: 'Bearer ' + authContext.token,
-				},
-			})
-			.then((res) => {
-				setUser(res.data.user);
-			})
-			.catch((err) => {
-				console.log(err.response);
-				setNotification(err.response.data.err);
-				setStatus(err.response.status);
-				return;
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	}, [authContext.token, id]);
-
 	return (
 		<Main>
 			{notification && status && <Notification notificationText={notification} status={status} />}
 			{loading && <Loader />}
 			{!loading && (
-				<>
-					<Section>
-						<UserMain user={user} onDrop={onProfileDrop} isCurrentUser={isCurrentUser} />
-					</Section>
-				</>
+				<Section>
+					<UserMain user={user} onDrop={onImageDrop} isCurrentUser={isCurrentUser} />
+				</Section>
 			)}
 		</Main>
 	);

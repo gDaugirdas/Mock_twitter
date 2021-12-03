@@ -9,7 +9,7 @@ const {
   getTweetAndItsComments,
   postTweet,
   updateTweet,
-  deleteTweet,
+  deleteTweetAndItsComments,
 } = require('../../controllers/v1');
 
 router.get('/:page', isLoggedIn, getTweetsAndAllTheirCount);
@@ -20,6 +20,6 @@ router.post('/tweet', isLoggedIn, postTweet);
 
 router.put('/tweet/:id', isLoggedIn, updateTweet);
 
-router.delete('/tweet/:id', isLoggedIn, deleteTweet);
+router.delete('/tweet/:id', isLoggedIn, deleteTweetAndItsComments);
 
 module.exports = router;

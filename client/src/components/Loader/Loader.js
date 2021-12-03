@@ -1,10 +1,10 @@
 import React from 'react';
 import * as S from './Loader.styles';
 
-const Loader = () => {
+const Loader = ({ className }) => {
 	return (
 		<S.SLoaderWrapper>
-			<S.SLoader>
+			<S.SLoader className={className}>
 				<div></div>
 				<div></div>
 				<div></div>
