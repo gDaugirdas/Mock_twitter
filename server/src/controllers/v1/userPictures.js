@@ -5,7 +5,6 @@ const { dbConfig } = require('../../config');
 const store = require('../../helpers/store');
 
 const updateProfilePicture = async (req, res) => {
-  console.log(req);
   if (!req.file) {
     return res.status(400).send({
       err: "Image wasn't uploaded",
@@ -33,7 +32,7 @@ const updateProfilePicture = async (req, res) => {
     await con.end();
 
     return data.affectedRows === 0
-      ? res.status(500).send({ err: "Image wasn't uploaded to profile" })
+      ? res.status(500).send({ err: "Image wasn't updated, please try again" })
       : res.send({ msg: 'Profile image updated', imageUrl: imageUrl });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });

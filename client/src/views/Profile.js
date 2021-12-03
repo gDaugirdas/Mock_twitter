@@ -57,17 +57,11 @@ const Profile = () => {
 					Authorization: 'Bearer ' + authContext.token,
 				},
 			})
-			.then((response) => {
-				if (response.data.length === 0) {
-					setStatus(404);
-					setNotification('User not found');
-					return;
-				}
-				console.log(response.data);
-				setUser(response.data.user);
-				return;
+			.then((res) => {
+				setUser(res.data.user);
 			})
 			.catch((err) => {
+				console.log(err.response);
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
 				return;

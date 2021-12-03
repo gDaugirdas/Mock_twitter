@@ -5,18 +5,18 @@ const router = express.Router();
 const { isLoggedIn } = require('../../middleware/isLoggedIn');
 
 const {
-  getTweets,
-  getTweet,
+  getTweetsAndAllTheirCount,
+  getTweetAndItsComments,
   postTweet,
   updateTweet,
   deleteTweet,
 } = require('../../controllers/v1');
 
-router.get('/:page', isLoggedIn, getTweets);
+router.get('/:page', isLoggedIn, getTweetsAndAllTheirCount);
 
-router.get('/tweet/:id', isLoggedIn, getTweet);
+router.get('/tweet/:id', isLoggedIn, getTweetAndItsComments);
 
-router.post('/', isLoggedIn, postTweet);
+router.post('/tweet', isLoggedIn, postTweet);
 
 router.put('/tweet/:id', isLoggedIn, updateTweet);
 

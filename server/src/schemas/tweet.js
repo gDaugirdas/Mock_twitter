@@ -27,25 +27,6 @@ const tweetPostSchema = Joi.object().keys({
       });
       return errors;
     }),
-  tweet_attachment: Joi.string()
-    .min(5)
-    .max(400)
-    .trim()
-    .error((errors) => {
-      errors.forEach((err) => {
-        switch (err.code) {
-          case 'string.min':
-            err.message = `Attached link should have at least ${err.local.limit} characters!`;
-            break;
-          case 'string.max':
-            err.message = `Attached link should cannot have more than ${err.local.limit} characters!`;
-            break;
-          default:
-            break;
-        }
-      });
-      return errors;
-    }),
 });
 
 const tweetUpdateSchema = Joi.object().keys({
@@ -68,25 +49,6 @@ const tweetUpdateSchema = Joi.object().keys({
             break;
           case 'string.max':
             err.message = `Tweet text cannot have more than ${err.local.limit} characters!`;
-            break;
-          default:
-            break;
-        }
-      });
-      return errors;
-    }),
-  tweet_attachment: Joi.string()
-    .min(5)
-    .max(400)
-    .trim()
-    .error((errors) => {
-      errors.forEach((err) => {
-        switch (err.code) {
-          case 'string.min':
-            err.message = `Attached link should have at least ${err.local.limit} characters!`;
-            break;
-          case 'string.max':
-            err.message = `Attached link should cannot have more than ${err.local.limit} characters!`;
             break;
           default:
             break;

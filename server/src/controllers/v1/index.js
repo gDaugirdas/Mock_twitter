@@ -1,29 +1,26 @@
 const { postLogin, postRegister } = require('./auth');
 
 const {
-  getTweets,
-  getTweet,
+  getTweetsAndAllTheirCount,
+  getTweetAndItsComments,
   postTweet,
   updateTweet,
   deleteTweet,
 } = require('./tweets');
 
-const { getTweetsCount } = require('./tweetsCount');
-
 const { getTweetLikes, postTweetLike } = require('./tweetsLike');
 
-const { getUser } = require('./user');
-
 const { postComment } = require('./comments');
+
+const { getUser } = require('./user');
 
 const { updateProfilePicture } = require('./userPictures');
 
 module.exports = {
   postLogin,
   postRegister,
-  getTweets,
-  getTweet,
-  getTweetsCount,
+  getTweetsAndAllTheirCount,
+  getTweetAndItsComments,
   getTweetLikes,
   postTweet,
   postTweetLike,

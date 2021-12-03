@@ -18,32 +18,20 @@ const Home = () => {
 	const { page } = useParams();
 
 	useEffect(() => {
-		const URLs = [
-			process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/' + page,
-			process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/count',
-		];
-
-		const fetchUrl = (url) => {
-			return axios.get(url, {
+		axios
+			.get(process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/' + page, {
 				headers: {
 					Authorization: 'Bearer ' + authContext.token,
 				},
-			});
-		};
-
-		const promiseArray = URLs.map(fetchUrl);
-
-		Promise.all(promiseArray)
-			.then((data) => {
-				const tweets = data[0].data;
-				const count = data[1].data[0].count;
-				setTweets(tweets);
-				setPageCount(count);
+			})
+			.then((res) => {
+				console.log(res.data.tweets);
+				setTweets(res.data.tweets);
+				setPageCount(res.data.tweetsCount.count);
 			})
 			.catch((err) => {
 				setNotification(err.response.data.err);
 				setStatus(err.response.status);
-				return;
 			});
 		return () => {
 			setRefetch(false);
@@ -55,7 +43,7 @@ const Home = () => {
 		setLoading(true);
 		axios
 
-			.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets', newTweet, {
+			.post(process.env.REACT_APP_BASE_API_URL + 'v1/api/tweets/tweet', newTweet, {
 				headers: {
 					Authorization: 'Bearer ' + authContext.token,
 				},

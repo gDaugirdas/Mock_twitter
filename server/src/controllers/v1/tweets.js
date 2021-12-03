@@ -4,44 +4,72 @@ const { dbConfig } = require('../../config');
 
 const { tweetPostSchema, tweetUpdateSchema } = require('../../schemas');
 
-const getTweets = async (req, res) => {
+const getTweetsAndAllTheirCount = async (req, res) => {
   const { page } = req.params;
   const limit = 10;
   const offset = (page - 1) * limit;
 
+  const getTweets = async () => {
+    try {
+      const query = `
+      SELECT bf_users.first_name, bf_users.profile_picture, bf_tweets.tweet_text, bf_tweets.created_at, bf_tweets.id, bf_tweets.user_id, bf_tweets.edited_at, COUNT(bf_comments.id) AS comment_count
+      FROM bf_tweets
+      LEFT JOIN bf_users
+      ON bf_tweets.user_id = bf_users.id
+      LEFT JOIN bf_comments
+      ON bf_tweets.id = bf_comments.tweet_id
+      GROUP BY bf_tweets.id
+      ORDER BY bf_tweets.created_at DESC
+      LIMIT ${limit}
+      OFFSET ${offset}
+      `;
+
+      const con = await mysql.createConnection(dbConfig);
+      const [data] = await con.execute(query);
+      await con.end();
+
+      return data;
+    } catch (err) {
+      return res.status(500).send({ err: 'Server error' });
+    }
+  };
+
+  const getTweetsCount = async (req, res) => {
+    try {
+      const query = `
+        SELECT COUNT(*) AS count
+        FROM bf_tweets
+        `;
+
+      const con = await mysql.createConnection(dbConfig);
+      const [data] = await con.execute(query);
+      await con.end();
+
+      return data;
+    } catch (err) {
+      return res.status(500).send({ err: 'Server error' });
+    }
+  };
+
   try {
-    const query = `
-    SELECT bf_users.first_name, bf_users.profile_picture, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.id, bf_tweets.user_id, COUNT(bf_comments.id) AS comment_count
-    FROM bf_tweets
-    LEFT JOIN bf_users
-    ON bf_tweets.user_id = bf_users.id
-    LEFT JOIN bf_comments
-    ON bf_tweets.id = bf_comments.tweet_id
-    GROUP BY bf_tweets.id
-    ORDER BY bf_tweets.created_at DESC
-    LIMIT ${limit}
-    OFFSET ${offset}
-    `;
+    const tweets = await getTweets();
+    const [tweetsCount] = await getTweetsCount();
 
-    const con = await mysql.createConnection(dbConfig);
-    const [data] = await con.execute(query);
-    await con.end();
-
-    return data.length === 0
-      ? res.status(404).send({ err: 'Tweets not found' })
-      : res.send(data);
+    return tweetsCount.count === 0
+      ? res.status(404).send({ err: 'No tweets found' })
+      : res.send({ tweets, tweetsCount });
   } catch (err) {
     return res.status(500).send({ err: 'Server error' });
   }
 };
 
-const getTweet = async (req, res) => {
+const getTweetAndItsComments = async (req, res) => {
   const { id } = req.params;
 
   const getTweet = async () => {
     try {
       const query = `
-      SELECT bf_users.first_name, bf_users.profile_picture, bf_users.created_at, bf_tweets.tweet_text, bf_tweets.tweet_attachment, bf_tweets.created_at, bf_tweets.likes, bf_tweets.id, bf_tweets.user_id, COUNT(bf_comments.id) AS comment_count
+      SELECT bf_users.first_name, bf_users.profile_picture, bf_users.created_at, bf_tweets.tweet_text, bf_tweets.created_at, bf_tweets.id, bf_tweets.user_id, bf_tweets.edited_at, COUNT(bf_comments.id) AS comment_count
       FROM bf_users
       LEFT JOIN bf_tweets
       ON bf_users.id = bf_tweets.user_id
@@ -105,9 +133,9 @@ const postTweet = async (req, res) => {
     });
   }
   try {
-    const query = `INSERT INTO bf_tweets (tweet_text, tweet_attachment, user_id) VALUES (${mysql.escape(
+    const query = `INSERT INTO bf_tweets (tweet_text, user_id) VALUES (${mysql.escape(
       userInput.tweet_text,
-    )}, ${mysql.escape(userInput.tweet_attachment)}, ${mysql.escape(userId)})`;
+    )},  ${mysql.escape(userId)})`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
@@ -139,7 +167,9 @@ const updateTweet = async (req, res) => {
   try {
     const query = `UPDATE bf_tweets SET tweet_text = ${mysql.escape(
       userInput.tweet_text,
-    )} WHERE id = ${mysql.escape(id)} AND user_id = ${mysql.escape(userId)}`;
+    )}, edited_at = NOW() WHERE id = ${mysql.escape(
+      id,
+    )} AND user_id = ${mysql.escape(userId)}`;
 
     const con = await mysql.createConnection(dbConfig);
     const [data] = await con.execute(query);
@@ -175,8 +205,8 @@ const deleteTweet = async (req, res) => {
 };
 
 module.exports = {
-  getTweets,
-  getTweet,
+  getTweetsAndAllTheirCount,
+  getTweetAndItsComments,
   postTweet,
   updateTweet,
   deleteTweet,

@@ -11,7 +11,6 @@ app.use(cors());
 const {
   auth,
   tweets,
-  tweetsCount,
   tweetsLike,
   comments,
   user,
@@ -19,7 +18,6 @@ const {
 } = require('./routes/v1');
 
 app.use('/v1/api/auth', auth);
-app.use('/v1/api/tweets/count', tweetsCount);
 app.use('/v1/api/tweets/like', tweetsLike);
 app.use('/v1/api/tweets', tweets);
 app.use('/v1/api/comments', comments);

@@ -10,7 +10,8 @@ const Tweet = ({ tweet, setLoading, loading, setNotification, setStatus }) => {
 			</S.SUserImageWrapper>
 			<S.STweetHero>
 				<S.SNameLink to={'/user/' + tweet.user_id}>{tweet.first_name}</S.SNameLink>
-				<S.SParagraphDate>Posted on: {tweet.created_at.split(['T'])[0]}</S.SParagraphDate>
+				<S.SParagraphDate>Posted on: {tweet.created_at}</S.SParagraphDate>
+				{tweet.edited_at && <S.SParagraphDate>Edited at: {tweet.edited_at}</S.SParagraphDate>}
 
 				<S.SParagraph>{tweet.tweet_text}</S.SParagraph>
 

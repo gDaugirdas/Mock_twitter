@@ -11,9 +11,21 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 					<S.SUserHero>
 						<S.SUserImageWrapper>
 							<S.SUserImage
-								userImageUrl={user[0].profile_picture}
-								userImageAlt={user[0].profile_picture && 'User profile picture'}
+								userImageUrl={user.profile_picture}
+								userImageAlt={user.profile_picture && 'User profile picture'}
 							/>
+						</S.SUserImageWrapper>
+						<S.STextWrapper>
+							<S.SUserHeading>{user.first_name}</S.SUserHeading>
+							<S.SUserHeading>{user.last_name}</S.SUserHeading>
+							<S.SUserParagraph>
+								<S.SUserSpan>Email: </S.SUserSpan>
+								{user.email || 'Email not found'}
+							</S.SUserParagraph>
+							<S.SUserParagraph>
+								<S.SUserSpan> Created at: </S.SUserSpan>
+								{user.created_at.split('T')[0]}
+							</S.SUserParagraph>
 							{isCurrentUser && (
 								<Dropzone
 									onDrop={onDrop}
@@ -21,18 +33,6 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 									acceptedFileTypes={['.jpeg', '.jpg', '.png']}
 								/>
 							)}
-						</S.SUserImageWrapper>
-						<S.STextWrapper>
-							<S.SUserHeading>{user[0].first_name}</S.SUserHeading>
-							<S.SUserHeading>{user[0].last_name}</S.SUserHeading>
-							<S.SUserParagraph>
-								<S.SUserSpan>Email: </S.SUserSpan>
-								{user[0].email || 'Email not found'}
-							</S.SUserParagraph>
-							<S.SUserParagraph>
-								<S.SUserSpan> Created at: </S.SUserSpan>
-								{user[0].created_at.split('T')[0]}
-							</S.SUserParagraph>
 						</S.STextWrapper>
 					</S.SUserHero>
 				</>
