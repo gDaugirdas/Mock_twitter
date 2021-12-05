@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { media } from '../../styles';
 
 export const SButton = styled.button`
-	background-color: ${(props) => props.theme.colors.secondary};
+	background-color: ${(props) => props.bgColor};
 	color: ${(props) => props.theme.colors.primary};
 	border: none;
 	border-radius: 0.2rem;
@@ -11,8 +11,8 @@ export const SButton = styled.button`
 	font-size: 1.6rem;
 	cursor: pointer;
 	${media.sm_up`
-    font-size: 1.8rem;
-    width: auto;
+   		font-size: 1.8rem;
+    	width: auto;
   `}
 
 	&:disabled {

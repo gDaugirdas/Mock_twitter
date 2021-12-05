@@ -16,9 +16,4 @@ UserImage.propTypes = {
 	userImageAlt: PropTypes.string,
 };
 
-UserImage.defaultProps = {
-	userImageUrl: null,
-	userImageAlt: null,
-};
-
 export default UserImage;

@@ -10,8 +10,4 @@ Main.propTypes = {
 	children: PropTypes.node.isRequired,
 };
 
-Main.defaultProps = {
-	children: null,
-};
-
 export default Main;

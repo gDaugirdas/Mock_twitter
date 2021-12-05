@@ -17,9 +17,4 @@ Burger.propTypes = {
 	setIsOpen: PropTypes.func.isRequired,
 };
 
-Burger.defaultProps = {
-	isOpen: false,
-	setIsOpen: () => {},
-};
-
 export default Burger;

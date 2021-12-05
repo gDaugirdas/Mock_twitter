@@ -5,8 +5,8 @@ import {
 	Container,
 	Loader,
 	Notification,
-	Tweet as TweetComponent,
-	Comment,
+	Post as TweetComponent,
+	Post as Comment,
 	AccordionForm,
 	Button,
 } from '../components';
@@ -185,14 +185,15 @@ const Tweet = () => {
 					{tweet && (
 						<>
 							<TweetComponent
-								tweet={tweet}
+								post={tweet}
 								loading={loading}
 								setLoading={setLoading}
 								setNotification={setNotification}
 								setStatus={setStatus}
+								variant='tweet'
 							/>
 							{isOwner && (
-								<Button handleClick={handleTweetDelete} isDisabled={loading}>
+								<Button handleClick={handleTweetDelete} isDisabled={loading} variant='delete'>
 									Delete
 								</Button>
 							)}
@@ -215,7 +216,7 @@ const Tweet = () => {
 			</Section>
 			<Section>
 				<Container>
-					{comments && comments.map((comment) => <Comment key={comment.id} comment={comment} />)}
+					{comments && comments.map((comment) => <Comment key={comment.id} post={comment} />)}
 				</Container>
 			</Section>
 		</Main>

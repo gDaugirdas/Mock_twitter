@@ -22,5 +22,5 @@ export const SFormTextarea = styled.textarea`
 	width: 100%;
 	padding: 1rem;
 	font-size: 1.6rem;
-	min-height: 10rem;
+	min-height: 14rem;
 `;

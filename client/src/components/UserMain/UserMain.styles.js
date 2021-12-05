@@ -20,6 +20,8 @@ export const SUserImage = styled(UserImage)`
 
 export const SUserImageWrapper = styled.div`
 	flex: 2;
+	display: flex;
+	align-items: center;
 `;
 
 export const STextWrapper = styled.div`

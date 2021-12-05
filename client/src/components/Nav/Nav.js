@@ -12,6 +12,7 @@ const Nav = ({ pages, isOpen, setIsOpen }) => {
 			localStorage.removeItem('token');
 		}
 	};
+
 	return (
 		<S.SNav isOpen={isOpen}>
 			{pages?.map((page) => (
@@ -38,12 +39,6 @@ Nav.propTypes = {
 		})
 	),
 	isOpen: PropTypes.bool.isRequired,
-};
-
-Nav.defaultProps = {
-	pages: [],
-	isOpen: false,
-	setIsOpen: () => {},
 };
 
 export default Nav;

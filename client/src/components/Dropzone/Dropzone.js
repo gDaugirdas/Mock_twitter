@@ -13,10 +13,10 @@ const Dropzone = ({ onDrop, dropText, text, acceptedFileTypes }) => {
 		<S.SDropzone {...getRootProps()} isDragActive={isDragActive}>
 			<input {...getInputProps()} />
 			{isDragActive ? (
-				<S.SParagraph>{dropText || 'Drop file here...'}</S.SParagraph>
+				<S.SParagraph>{dropText}</S.SParagraph>
 			) : (
 				<>
-					<S.SParagraph>{text || 'Upload file'}</S.SParagraph>
+					<S.SParagraph>{text}</S.SParagraph>
 					{acceptedFileTypes && (
 						<S.SParagraph>
 							Accepted file types:
@@ -33,6 +33,15 @@ const Dropzone = ({ onDrop, dropText, text, acceptedFileTypes }) => {
 
 Dropzone.propTypes = {
 	onDrop: PropTypes.func.isRequired,
+	dropText: PropTypes.string,
+	text: PropTypes.string,
+	acceptedFileTypes: PropTypes.array,
+};
+
+Dropzone.defaultProps = {
+	dropText: 'Drop file here...',
+	text: 'Upload file',
+	acceptedFileTypes: [],
 };
 
 export default Dropzone;

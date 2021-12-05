@@ -15,12 +15,12 @@ Form.propTypes = {
 	heading: PropTypes.string,
 	children: PropTypes.node.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
+	className: PropTypes.string,
 };
 
 Form.defaultProps = {
 	heading: null,
-	children: null,
-	handleSubmit: () => {},
+	className: null,
 };
 
 export default Form;

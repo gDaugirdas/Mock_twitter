@@ -1,5 +1,14 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Main, Section, Container, Loader, Notification, PaginatedItems, AccordionForm, Tweet } from '../components';
+import {
+	Main,
+	Section,
+	Container,
+	Loader,
+	Notification,
+	PaginatedItems,
+	AccordionForm,
+	Post as Tweet,
+} from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -65,6 +74,7 @@ const Home = () => {
 			.then((res) => {
 				if (res.status === 200) {
 					page !== '1' && navigate('/home/1');
+					setRefetch(true);
 					setNotification(res.data.msg);
 					setStatus(res.status);
 					setNewTweet();
@@ -110,11 +120,12 @@ const Home = () => {
 							{tweets.map((tweet) => (
 								<Tweet
 									key={tweet.id}
-									tweet={tweet}
+									post={tweet}
 									loading={loading}
 									setLoading={setLoading}
 									setNotification={setNotification}
 									setStatus={setStatus}
+									variant='tweet'
 								/>
 							))}
 						</Container>

@@ -4,8 +4,8 @@ import * as S from './Logo.styles';
 
 const Logo = ({ logoUrl, logoText, logoLink }) => {
 	return (
-		<S.SLogoLink to={logoLink || '/'}>
-			<S.SLogo src={logoUrl || 'No logo image'} alt={logoText || 'No logo text'} />
+		<S.SLogoLink to={logoLink}>
+			<S.SLogo src={logoUrl} alt={logoText} />
 			{logoText && <S.SLogoText>{logoText}</S.SLogoText>}
 		</S.SLogoLink>
 	);
@@ -18,9 +18,9 @@ Logo.propTypes = {
 };
 
 Logo.defaultProps = {
-	logoUrl: '',
-	logoText: null,
-	logoLink: null,
+	logoUrl: '/',
+	logoText: 'No logo image',
+	logoLink: 'No logo text',
 };
 
 export default Logo;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import PropTypes from 'prop-types';
 import * as S from './Like.styled';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
@@ -82,6 +83,12 @@ const Like = ({ tweetId, setNotification, setStatus }) => {
 			)}
 		</S.SLikeWrapper>
 	);
+};
+
+Like.propTypes = {
+	tweetId: PropTypes.number.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	setStatus: PropTypes.func.isRequired,
 };
 
 export default Like;

@@ -42,7 +42,7 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 };
 
 UserMain.propTypes = {
-	user: PropTypes.object,
+	user: PropTypes.object.isRequired,
 	onDrop: PropTypes.func.isRequired,
 	isCurrentUser: PropTypes.bool.isRequired,
 };
