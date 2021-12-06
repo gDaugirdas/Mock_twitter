@@ -2,7 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import AuthProvider from './contexts/AuthContext';
-import { GlobalStyles, theme } from './styles';
+import useThemeToggle from './hooks/useThemeToggle';
+import { GlobalStyles, darkTheme, lightTheme} from './styles';
 import { Header, Footer, PrivateRoute, Loader } from './components';
 
 const LazyHome = lazy(() => import('./views/Home.js'));
@@ -12,8 +13,12 @@ const LazyProfile = lazy(() => import('./views/Profile'));
 const LazyTweet = lazy(() => import('./views/Tweet'));
 
 const PageRouter = () => {
+  const [theme, themeToggler, mountedComponent] = useThemeToggle();
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+  if (!mountedComponent) return <div />
+
 	return (
-		<ThemeProvider theme={theme}>
+		<ThemeProvider theme={themeMode}>
 			<GlobalStyles />
 			<AuthProvider>
 				<Router defaultParams={{ page: 1 }}>
@@ -34,7 +39,7 @@ const PageRouter = () => {
 								path='/user/:id'
 								element={
 									<PrivateRoute>
-										<LazyProfile />
+										<LazyProfile toggleTheme={themeToggler} theme={theme}/>
 									</PrivateRoute>
 								}
 							/>

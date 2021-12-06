@@ -29,10 +29,10 @@ export const SLoader = styled.div`
 		width: 6.4rem;
 		height: 6.4rem;
 		margin: 0.8rem;
-		border: 0.8rem solid ${(props) => props.theme.colors.secondary};
+		border: 0.8rem solid ${(props) => props.theme.secondary};
 		border-radius: 50%;
 		animation: ${rotateAnimation} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-		border-color: ${({ theme }) => theme.colors.secondary} transparent transparent transparent;
+		border-color: ${(props) => props.theme.secondary} transparent transparent transparent;
 
 		&:nth-child(1) {
 			animation-delay: -0.45s;

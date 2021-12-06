@@ -4,7 +4,7 @@ import { media } from '../../styles';
 
 export const SNav = styled.nav`
 	width: 18rem;
-	background: ${(props) => props.theme.colors.secondary};
+	background: ${(props) => props.theme.secondary};
 	height: 100%;
 	top: 0;
 	right: -18rem;
@@ -36,10 +36,10 @@ export const SNavLink = styled(Link)`
 	display: block;
 	padding: 1.5rem 0;
 	font-size: 1.8rem;
-	color: ${(props) => props.theme.colors.primary};
-	border-bottom: 0.2rem solid ${(props) => props.theme.colors.primary};
+	color: ${(props) => props.theme.primary};
+	border-bottom: 0.2rem solid ${(props) => props.theme.primary};
 	&:first-child {
-		border-top: 0.2rem solid ${(props) => props.theme.colors.primary};
+		border-top: 0.2rem solid ${(props) => props.theme.primary};
 	}
 	${media.sm_up`
         font-size: 2rem;

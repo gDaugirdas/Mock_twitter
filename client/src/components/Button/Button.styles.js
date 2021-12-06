@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { media } from '../../styles';
 
 export const SButton = styled.button`
-	background-color: ${(props) => props.bgColor};
-	color: ${(props) => props.theme.colors.primary};
+	background-color: ${(props) => props.theme.secondary};
+	color: ${(props) => props.theme.primary};
 	border: none;
 	border-radius: 0.2rem;
 	width: 100%;
@@ -16,6 +16,6 @@ export const SButton = styled.button`
   `}
 
 	&:disabled {
-		background-color: ${(props) => props.theme.colors.disabled};
+		background-color: ${(props) => props.theme.disabled};
 	}
 `;

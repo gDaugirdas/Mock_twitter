@@ -4,8 +4,8 @@ import { UserImage } from '../';
 
 export const SWrapper = styled.div`
 	display: flex;
-	border: 0.1rem solid ${(props) => props.theme.colors.secondary};
-	box-shadow: 0 0.2rem 0.5rem ${(props) => props.theme.colors.shadow};
+	border: 0.1rem solid ${(props) => props.theme.secondary};
+	box-shadow: 0 0.2rem 0.5rem ${(props) => props.theme.shadow};
 	border-radius: 1rem;
 	padding: 1rem;
 	margin-bottom: 2rem;
@@ -41,7 +41,7 @@ export const SFooter = styled.div`
 
 export const SUserLink = styled(Link)`
 	font-size: 2rem;
-	color: ${(props) => props.theme.colors.font};
+	color: ${(props) => props.theme.font};
 	font-weight: 600;
 	&:hover {
 		text-decoration: underline;
@@ -51,5 +51,5 @@ export const SUserLink = styled(Link)`
 export const STweetLink = styled(Link)`
 	font-size: 3rem;
 	font-weight: 600;
-	color: ${(props) => props.theme.colors.font};
+	color: ${(props) => props.theme.font};
 `;

@@ -5,7 +5,7 @@ export const SFooter = styled.footer`
 	justify-content: center;
 	align-items: center;
 	height: 6rem;
-	box-shadow: 0 -0.1rem 1rem 0 ${(props) => props.theme.colors.shadow};
+	box-shadow: 0 -0.1rem 1rem 0 ${(props) => props.theme.shadow};
 	margin-top: auto;
 `;
 

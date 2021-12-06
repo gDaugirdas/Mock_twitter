@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import * as S from './UserMain.styles';
-import { Container, Dropzone } from '..';
+import * as S from './UserHero.styles';
+import { Container, Dropzone, ThemeToggler } from '..';
 
-const UserMain = ({ user, onDrop, isCurrentUser }) => {
+const UserHero = ({ user, onDrop, isCurrentUser, theme, toggleTheme }) => {
 	return (
 		<Container>
 			{user && (
@@ -27,11 +27,14 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 								{user.created_at}
 							</S.SUserParagraph>
 							{isCurrentUser && (
+                <>
 								<Dropzone
 									onDrop={onDrop}
 									text='Upload profile image'
 									acceptedFileTypes={['.jpeg', '.jpg', '.png']}
 								/>
+                 <ThemeToggler theme={theme} toggleTheme={toggleTheme}/>
+                </>
 							)}
 						</S.STextWrapper>
 					</S.SUserHero>
@@ -41,10 +44,10 @@ const UserMain = ({ user, onDrop, isCurrentUser }) => {
 	);
 };
 
-UserMain.propTypes = {
+UserHero.propTypes = {
 	user: PropTypes.object.isRequired,
 	onDrop: PropTypes.func.isRequired,
 	isCurrentUser: PropTypes.bool.isRequired,
 };
 
-export default UserMain;
+export default UserHero;

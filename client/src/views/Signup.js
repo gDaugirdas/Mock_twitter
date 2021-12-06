@@ -72,6 +72,8 @@ const Signup = () => {
 							inputType='text'
 							inputPlaceholder='Enter your first name'
 							handleChange={(e) => setInputs({ ...inputs, first_name: e.target.value })}
+              star={true}
+              required
 						/>
 						<FormGroupInput
 							labelText='Last Name'
@@ -79,6 +81,8 @@ const Signup = () => {
 							inputType='text'
 							inputPlaceholder='Enter your last name'
 							handleChange={(e) => setInputs({ ...inputs, last_name: e.target.value })}
+              star={true}
+              required
 						/>
 						<FormGroupInput
 							labelText='Email'
@@ -86,6 +90,8 @@ const Signup = () => {
 							inputType='email'
 							inputPlaceholder='Enter your email'
 							handleChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+              star={true}
+              required
 						/>
 						<FormGroupInput
 							labelText='Password'
@@ -93,6 +99,9 @@ const Signup = () => {
 							inputType='password'
 							inputPlaceholder='Enter your password'
 							handleChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+              legend='Password must contain one letter, one number and one special character'
+              star={true}
+              required
 						/>
 						<FormGroupInput
 							labelText='Confirm Password'
@@ -100,6 +109,8 @@ const Signup = () => {
 							inputType='password'
 							inputPlaceholder='Confirm password'
 							handleChange={(e) => setInputs({ ...inputs, confirm_password: e.target.value })}
+              star={true}
+              required
 						/>
 						<Button type='submit' isDisabled={loading}>
 							Sign up

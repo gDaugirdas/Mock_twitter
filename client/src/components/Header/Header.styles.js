@@ -3,7 +3,7 @@ import { media } from '../../styles';
 
 export const SHeader = styled.header`
 	padding: 0.5rem 0;
-	box-shadow: 0 0 0.3rem ${(props) => props.theme.colors.shadow};
+	box-shadow: 0 0 0.3rem ${(props) => props.theme.shadow};
 `;
 
 export const SHeaderContainer = styled.div`

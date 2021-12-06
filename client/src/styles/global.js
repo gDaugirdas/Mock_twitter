@@ -17,8 +17,8 @@ body {
 	overflow-x: hidden;
 	height: 100%;
 	box-sizing: border-box; 
-	background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.font};
+	background: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.font};
 }
 ul {
 	list-style: none;

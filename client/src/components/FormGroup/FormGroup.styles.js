@@ -24,3 +24,11 @@ export const SFormTextarea = styled.textarea`
 	font-size: 1.6rem;
 	min-height: 14rem;
 `;
+
+export const SSpan = styled.span`
+  color: ${props => props.theme.accent};
+`
+
+export const SLegend = styled.legend`
+  
+`

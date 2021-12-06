@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { media } from '../../styles';
-import { UserImage } from '../';
+import { UserImage } from '..';
 
 export const SUserHero = styled.div`
 	text-align: center;

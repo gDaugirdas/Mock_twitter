@@ -21,7 +21,7 @@ export const SHamburger = styled.button`
 export const SHambugerLine = styled.div`
 	width: 100%;
 	height: 0.3rem;
-	background-color: ${(props) => props.theme.colors.font};
+	background-color: ${(props) => props.theme.font};
 	transition: all 0.3s linear;
 	transform-origin: 0.2rem;
 	border-radius: 0.1rem;
@@ -32,8 +32,8 @@ export const SHambugerLine = styled.div`
 	${(props) =>
 		props.isOpen &&
 		`
-			background-color: ${props.theme.colors.primary};
-            &:first-child {
+			background-color: ${props.theme.primary};
+        &:first-child {
 				transform: rotate(45deg);
 				width: 3.2rem;
 			}

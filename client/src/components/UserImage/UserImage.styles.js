@@ -4,7 +4,7 @@ export const SImageWrapper = styled.div`
 	border-radius: 50%;
 	overflow: hidden;
 	margin: 0 auto;
-	box-shadow: 0 0.2rem 0.5rem ${(props) => props.theme.colors.shadow};
+	box-shadow: 0 0.2rem 0.5rem ${(props) => props.theme.shadow};
 `;
 
 export const SImage = styled.img`

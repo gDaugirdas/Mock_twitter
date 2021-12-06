@@ -15,7 +15,6 @@ const bucket = gc.bucket(process.env.GCLOUD_STORAGE_BUCKET); // should be your b
 const store = (file) =>
   new Promise((resolve, reject) => {
     const { originalname, buffer } = file;
-    console.log(file);
     const blob = bucket.file(originalname.replace(/ /g, '_'));
     const blobStream = blob.createWriteStream({
       resumable: false,

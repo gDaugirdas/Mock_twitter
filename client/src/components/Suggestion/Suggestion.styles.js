@@ -6,5 +6,5 @@ export const SSuggestion = styled.p`
 `;
 
 export const SSuggestionLink = styled(Link)`
-	color: ${(props) => props.theme.colors.secondary};
+	color: ${(props) => props.theme.secondary};
 `;

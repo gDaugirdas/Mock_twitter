@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { Main, Section, Loader, Notification, UserMain } from '../components';
+import { Main, Section, Loader, Notification, UserHero } from '../components';
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
-const Profile = () => {
+const Profile = ({theme, toggleTheme}) => {
 	const [user, setUser] = useState();
 
 	const [notification, setNotification] = useState();
@@ -84,9 +84,10 @@ const Profile = () => {
 			{loading && <Loader />}
 			{!loading && (
 				<Section>
-					<UserMain user={user} onDrop={onImageDrop} isCurrentUser={isCurrentUser} />
+					<UserHero user={user} onDrop={onImageDrop} isCurrentUser={isCurrentUser} theme={theme} toggleTheme={toggleTheme} />
 				</Section>
 			)}
+   
 		</Main>
 	);
 };

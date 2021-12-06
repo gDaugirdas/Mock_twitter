@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const SLogoLink = styled(Link)`
 	display: flex;
 	align-items: flex-end;
-	color: ${(props) => props.theme.colors.font};
+	color: ${(props) => props.theme.font};
 `;
 
 export const SLogo = styled.img`

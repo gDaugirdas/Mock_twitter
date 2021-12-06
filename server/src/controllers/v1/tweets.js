@@ -155,7 +155,6 @@ const updateTweet = async (req, res) => {
 
   let userInput = req.body;
 
-  console.log(userInput.tweet_text, id, userId);
   try {
     userInput = await tweetUpdateSchema.validateAsync(userInput);
   } catch (err) {
@@ -221,7 +220,7 @@ const deleteTweetAndItsComments = async (req, res) => {
 
   try {
     const isTweetDeleted = await deleteTweet();
-    console.log(isTweetDeleted);
+  
     isTweetDeleted && (await deleteTweetComments());
 
     return !isTweetDeleted

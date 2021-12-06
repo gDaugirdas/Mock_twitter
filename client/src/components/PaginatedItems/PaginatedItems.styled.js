@@ -22,9 +22,9 @@ export const SReactPaginate = styled(ReactPaginate)`
 		border-color: transparent;
 	}
 	li.selected a {
-		background-color: #0366d6;
+		background-color: ${props => props.theme.secondary};
 		border-color: transparent;
-		color: white;
+	  color: ${props => props.theme.primary};
 		min-width: 32px;
 	}
 `;

@@ -19,7 +19,7 @@ export const SLikeChekbox = styled.input.attrs({ type: 'checkbox' })`
 export const SLikeLabel = styled.label`
 	font-size: 2.4rem;
 	cursor: pointer;
-	color: ${(props) => (props.checked ? props.theme.colors.accent : props.theme.colors.font)};
+	color: ${(props) => (props.checked ? props.theme.accent : props.theme.font)};
 `;
 
 export const SLoader = styled(Loader)`

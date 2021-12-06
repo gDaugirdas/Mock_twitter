@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as S from './FormGroup.styles';
 
-const FormGroupInput = ({ labelText, htmlFor, inputType, inputPlaceholder, handleChange, required }) => {
+const FormGroupInput = ({ labelText, htmlFor, inputType, inputPlaceholder, handleChange, required, star, legend }) => {
 	return (
 		<S.SFormGroup>
-			<S.SFormLabel htmlFor={htmlFor}>{labelText}</S.SFormLabel>
+			<S.SFormLabel htmlFor={htmlFor}>{labelText}
+        {star && <S.SSpan>*</S.SSpan>}
+      </S.SFormLabel>
+      {legend && <S.SLegend>{legend}</S.SLegend>}
 			<S.SFormInput
 				type={inputType}
 				id={htmlFor}

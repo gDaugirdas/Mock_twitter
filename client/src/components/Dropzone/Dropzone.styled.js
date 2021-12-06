@@ -7,7 +7,7 @@ export const SDropzone = styled.div`
 	cursor: pointer;
 	text-align: center;
 	border-radius: 0.2rem;
-	border: 0.2rem solid ${(props) => (props.isDragActive ? props.theme.colors.accent : props.theme.colors.secondary)};
+	border: 0.2rem solid ${(props) => (props.isDragActive ? props.theme.accent : props.theme.secondary)};
 	${media.sm_up`
 		margin: 0;	
 	`}
@@ -20,6 +20,6 @@ export const SParagraph = styled.p`
 
 export const SSpan = styled.span`
 	margin-left: 0.5rem;
-	color: ${(props) => props.theme.colors.accent};
+	color: ${(props) => props.theme.accent};
 	display: inline-block;
 `;
