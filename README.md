@@ -38,7 +38,7 @@ Boilerplate for server `.env` file can be found in server root directory, `.env.
 
 - Lastly create data tables in your MYSQL database.
 
-- `CREATE TABLE bf_comments (id INT AUTO_INCREMENT PRIMARY KEY, tweet_id INT, comment TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`<br/>
+- `CREATE TABLE bf_comments (id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, tweet_id INT, comment TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`<br/>
 
 - `CREATE TABLE bf_likes (id INT AUTO_INCREMENT PRIMARY KEY, tweet_id INT, user_id INT, liked INT)`<br/>
 
