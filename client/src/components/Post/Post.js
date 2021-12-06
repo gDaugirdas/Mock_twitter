@@ -29,12 +29,14 @@ const Post = ({ post, setNotification, setStatus, variant }) => {
 
 Post.propTypes = {
 	post: PropTypes.object.isRequired,
-	setNotification: PropTypes.func.isRequired,
-	setStatus: PropTypes.func.isRequired,
+	setNotification: PropTypes.func,
+	setStatus: PropTypes.func,
 	variant: PropTypes.string,
 };
 
 Post.defaultProps = {
+  setNotification: () => {},
+  setStatus: () => {},
 	variant: '',
 };
 
