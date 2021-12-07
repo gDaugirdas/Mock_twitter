@@ -1,6 +1,6 @@
 # Bitter
 
-Twitter like - social media app web app.
+Twitter like social media app web app.
 
 ## About
 
