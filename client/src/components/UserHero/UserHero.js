@@ -24,17 +24,17 @@ const UserHero = ({ user, onDrop, isCurrentUser, theme, toggleTheme }) => {
 							</S.SUserParagraph>
 							<S.SUserParagraph>
 								<S.SUserSpan> Created at: </S.SUserSpan>
-								{user.created_at}
+								{user.created_at.split('T')[0] || 'Date not found'}
 							</S.SUserParagraph>
 							{isCurrentUser && (
-                <>
-								<Dropzone
-									onDrop={onDrop}
-									text='Upload profile image'
-									acceptedFileTypes={['.jpeg', '.jpg', '.png']}
-								/>
-                 <ThemeToggler theme={theme} toggleTheme={toggleTheme}/>
-                </>
+								<>
+									<Dropzone
+										onDrop={onDrop}
+										text='Upload profile image'
+										acceptedFileTypes={['.jpeg', '.jpg', '.png']}
+									/>
+									<ThemeToggler theme={theme} toggleTheme={toggleTheme} />
+								</>
 							)}
 						</S.STextWrapper>
 					</S.SUserHero>
