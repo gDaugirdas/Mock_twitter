@@ -16,7 +16,7 @@ Docker is used to run the project.
 If you plan on running app locally define url like so `REACT_APP_BASE_API_URL=http://localhost:8080/`.
 Boilerplate for client `.env` file can be found in client root directory, `.env.example` file.
 
-- Create Google Cloud account and enable Vision AI and Cloud Storage services.<br/>
+- Create Google Cloud account and enable Cloud Storage services.<br/>
 Download Google API credrentials `.json` file, rename it `keys.json` and paste it
 in `/server/src/config/` folder. This will connect the server to Google Cloud services.
 
